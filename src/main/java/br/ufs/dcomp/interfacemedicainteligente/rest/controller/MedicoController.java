@@ -22,9 +22,8 @@ public class MedicoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Medico cadastarMedico(@RequestBody MedicoDTO medicoDto) {
+    public Integer cadastarMedico(@RequestBody MedicoDTO medicoDto) {
         Medico medico = medicoService.cadastrar(medicoDto);
-        return medico;
+        return medico.getId();
     }
-
 }
