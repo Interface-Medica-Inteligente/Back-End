@@ -14,7 +14,6 @@ import br.ufs.dcomp.interfacemedicainteligente.service.ValidatorService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class MedicoServiceImpl implements MedicoService {
 
     @Autowired
