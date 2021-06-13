@@ -19,7 +19,7 @@ public class MedicoServiceImpl implements MedicoService {
 
     @Override
     @Transactional
-    public Medico cadastrar(MedicoDTO medicoDto){
+    public Integer cadastrar(MedicoDTO medicoDto){
 
         if(!ValidatorService.validarCpf(medicoDto.getCpf())) 
             throw new RegraNegocioException("CPF Inválido.");
@@ -35,7 +35,7 @@ public class MedicoServiceImpl implements MedicoService {
 
         medicoRepository.save(medico);
         
-        return medico;
+        return medico.getId();
     }
-
+    
 }
