@@ -1,6 +1,5 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,14 +10,14 @@ import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
 import br.ufs.dcomp.interfacemedicainteligente.service.ValidatorService;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
 
     @Autowired
-    private final MedicoRepository medicoRepository;
+    private MedicoRepository medicoRepository;
 
+    @Override
     @Transactional
     public Medico cadastrar(MedicoDTO medicoDto){
 
