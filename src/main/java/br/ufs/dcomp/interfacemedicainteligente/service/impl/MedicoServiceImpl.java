@@ -1,5 +1,9 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,35 +11,70 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
-import br.ufs.dcomp.interfacemedicainteligente.service.ValidatorService;
+import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
 
-    @Autowired
-    private MedicoRepository medicoRepository;
+	@Autowired
+	private MedicoRepository medicoRepository;
 
-    @Override
-    @Transactional
-    public Integer cadastrar(MedicoDTO medicoDto){
+	@Override
+	@Transactional(readOnly = true)
+	public List<MedicoDTO> findAll() {
+		List<Medico> list = medicoRepository.findAll();
+		return list.stream().map(medico -> new MedicoDTO(medico)).collect(Collectors.toList());
+	}
 
-        if(!ValidatorService.validarCpf(medicoDto.getCpf())) 
-            throw new RegraNegocioException("CPF Inválido.");
-        
-        Medico medico = new Medico();
+	@Override
+	@Transactional(readOnly = true)
+	public MedicoDTO findById(long idMedico) {
+		Optional<Medico> medico = medicoRepository.findById(idMedico);
 
-        medico.setNome(medicoDto.getNome());
-        medico.setCpf(medicoDto.getCpf());
-        medico.setEmail(medicoDto.getEmail());
-        medico.setSexo(medicoDto.getSexo());
-        medico.setCrm(medicoDto.getCrm());
-        medico.setSenha(medicoDto.getSenha());
+		if (medico.isPresent()) {
+			return new MedicoDTO(medico.get());
+		}
 
-        medicoRepository.save(medico);
-        
-        return medico.getId();
-    }
-    
+		throw new RegraNegocioException("Não existe medico cadastrado para este identificador");
+	}
+
+	@Override
+	@Transactional
+	public Long cadastrar(MedicoDTO medicoDto) {
+
+		if (!ValidatorDocumentUseful.validarCpf(medicoDto.getCpf()))
+			throw new RegraNegocioException("CPF Inválido.");
+
+		Medico medico = new Medico();
+
+		medico.setNome(medicoDto.getNome());
+		medico.setCpf(medicoDto.getCpf());
+		medico.setEmail(medicoDto.getEmail());
+		medico.setSexo(medicoDto.getSexo());
+		medico.setCrm(medicoDto.getCrm());
+		medico.setSenha(medicoDto.getSenha());
+
+		medicoRepository.save(medico);
+
+		return medico.getId();
+	}
+
+	@Override
+	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDTO) {
+		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDTO.getEmail());
+
+		if (!medico.isPresent()) {
+			throw new RegraNegocioException("Médico não encontrado para o email informado");
+		}
+
+		if (!medico.get().getSenha().equals(medicoAutenticarDTO.getSenha())) {
+			throw new RegraNegocioException("Senha inválida");
+		}
+
+		return medico.get().getId();
+	}
+
 }
