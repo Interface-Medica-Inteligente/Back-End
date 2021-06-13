@@ -63,14 +63,14 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long authenticate(MedicoAtenticarDTO medicoAutenticar) {
-		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticar.getEmail());
+	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDTO) {
+		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDTO.getEmail());
 
 		if (!medico.isPresent()) {
 			throw new RegraNegocioException("Médico não encontrado para o email informado");
 		}
 
-		if (!medico.get().getSenha().equals(medicoAutenticar.getSenha())) {
+		if (!medico.get().getSenha().equals(medicoAutenticarDTO.getSenha())) {
 			throw new RegraNegocioException("Senha inválida");
 		}
 

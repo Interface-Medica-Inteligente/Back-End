@@ -1,11 +1,11 @@
 package br.ufs.dcomp.interfacemedicainteligente.rest.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,18 +26,21 @@ public class MedicoController {
 	private MedicoService medicoService;
 
 	@GetMapping("/findAll")
-	public ResponseEntity<List<MedicoDTO>> findAll() {
-		return ResponseEntity.ok().body(medicoService.findAll());
+	@ResponseStatus(OK)
+	public List<MedicoDTO> findAll() {
+		return medicoService.findAll();
 	}
 
 	@GetMapping("/findById/{idMedico}")
-	public ResponseEntity<MedicoDTO> findById(@PathVariable long idMedico) {
-		return ResponseEntity.ok().body(medicoService.findById(idMedico));
+	@ResponseStatus(OK)
+	public MedicoDTO findById(@PathVariable long idMedico) {
+		return medicoService.findById(idMedico);
 	}
 
 	@GetMapping("/authenticate")
-	public ResponseEntity<Long> authenticate(@RequestBody MedicoAtenticarDTO medicoAutenticar) {
-		return ResponseEntity.ok().body(medicoService.authenticate(medicoAutenticar));
+	@ResponseStatus(OK)
+	public Long authenticate(@RequestBody MedicoAtenticarDTO medicoAutenticarDTO) {
+		return medicoService.authenticate(medicoAutenticarDTO);
 	}
 
 	@PostMapping
