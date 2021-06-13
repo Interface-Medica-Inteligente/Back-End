@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
-import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
 
@@ -22,8 +21,7 @@ public class MedicoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Integer cadastarMedico(@RequestBody MedicoDTO medicoDto) {
-        Medico medico = medicoService.cadastrar(medicoDto);
-        return medico.getId();
+    public Integer cadastar(@RequestBody MedicoDTO medicoDto) {
+        return medicoService.cadastrar(medicoDto);
     }
 }
