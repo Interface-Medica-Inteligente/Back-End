@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
@@ -36,15 +35,14 @@ public class MedicoController {
 		return ResponseEntity.ok().body(medicoService.findById(idMedico));
 	}
 
-	@PostMapping
-	@ResponseStatus(CREATED)
-	public Long cadastarMedico(@RequestBody MedicoDTO medicoDto) {
-		Medico medico = medicoService.cadastrar(medicoDto);
-		return medico.getId();
-	}
-
 	@GetMapping("/authenticate")
 	public ResponseEntity<Long> authenticate(@RequestBody MedicoAtenticarDTO medicoAutenticar) {
 		return ResponseEntity.ok().body(medicoService.authenticate(medicoAutenticar));
+	}
+
+	@PostMapping
+	@ResponseStatus(CREATED)
+	public Long cadastar(@RequestBody MedicoDTO medicoDto) {
+		return medicoService.cadastrar(medicoDto);
 	}
 }

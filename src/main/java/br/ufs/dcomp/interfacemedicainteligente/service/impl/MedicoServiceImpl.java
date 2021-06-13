@@ -22,15 +22,15 @@ public class MedicoServiceImpl implements MedicoService {
 	@Autowired
 	private MedicoRepository medicoRepository;
 
-	@Override
-	@Transactional(readOnly = true)
+	@Override 
+	@Transactional(readOnly=true)
 	public List<MedicoDTO> findAll() {
 		List<Medico> list = medicoRepository.findAll();
 		return list.stream().map(medico -> new MedicoDTO(medico)).collect(Collectors.toList());
 	}
 
-	@Override
-	@Transactional(readOnly = true)
+	@Override @Transactional(readOnly=true)
+
 	public MedicoDTO findById(long idMedico) {
 		Optional<Medico> medico = medicoRepository.findById(idMedico);
 
@@ -43,7 +43,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	@Transactional
-	public Medico cadastrar(MedicoDTO medicoDto) {
+	public Long cadastrar(MedicoDTO medicoDto) {
 
 		if (!ValidatorDocumentUseful.validarCpf(medicoDto.getCpf()))
 			throw new RegraNegocioException("CPF Inválido.");
@@ -59,7 +59,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 		medicoRepository.save(medico);
 
-		return medico;
+		return medico.getId();
 	}
 
 	@Override
@@ -76,5 +76,8 @@ public class MedicoServiceImpl implements MedicoService {
 
 		return medico.get().getId();
 	}
+
+	
+
 
 }
