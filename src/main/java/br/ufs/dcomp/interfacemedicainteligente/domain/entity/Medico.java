@@ -14,9 +14,12 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @PrimaryKeyJoinColumn(name="id_pessoa")
-public class Medico extends Pessoa{
+public class Medico extends Pessoa {
 
-    private String senha;
+	private static final long serialVersionUID = 1L;
+
+	private String senha;
 
     private String crm;
+    
 }

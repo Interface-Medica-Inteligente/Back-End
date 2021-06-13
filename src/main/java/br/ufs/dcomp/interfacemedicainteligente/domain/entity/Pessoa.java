@@ -28,7 +28,7 @@ public abstract class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="id_pessoa")
-    private Integer id;
+    private Long id;
     
     private String nome;
 
