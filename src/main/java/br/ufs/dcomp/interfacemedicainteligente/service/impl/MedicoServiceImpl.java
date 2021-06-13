@@ -22,15 +22,15 @@ public class MedicoServiceImpl implements MedicoService {
 	@Autowired
 	private MedicoRepository medicoRepository;
 
-	@Override 
-	@Transactional(readOnly=true)
+	@Override
+	@Transactional(readOnly = true)
 	public List<MedicoDTO> findAll() {
 		List<Medico> list = medicoRepository.findAll();
 		return list.stream().map(medico -> new MedicoDTO(medico)).collect(Collectors.toList());
 	}
 
-	@Override @Transactional(readOnly=true)
-
+	@Override
+	@Transactional(readOnly = true)
 	public MedicoDTO findById(long idMedico) {
 		Optional<Medico> medico = medicoRepository.findById(idMedico);
 
@@ -76,8 +76,5 @@ public class MedicoServiceImpl implements MedicoService {
 
 		return medico.get().getId();
 	}
-
-	
-
 
 }
