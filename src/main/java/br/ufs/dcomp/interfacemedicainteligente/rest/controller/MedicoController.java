@@ -26,7 +26,7 @@ public class MedicoController {
 	private MedicoService medicoService;
 
 	@GetMapping("/findAll")
-	public ResponseEntity<List<MedicoDTO>> finAll() {
+	public ResponseEntity<List<MedicoDTO>> findAll() {
 		return ResponseEntity.ok().body(medicoService.findAll());
 	}
 
