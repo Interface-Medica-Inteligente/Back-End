@@ -1,7 +1,9 @@
 package br.ufs.dcomp.interfacemedicainteligente.domain.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -16,19 +18,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="medico")
+@Table(name="paciente")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @PrimaryKeyJoinColumn(name="id_pessoa")
-public class Medico extends Pessoa {
+public class Paciente extends Pessoa {
 
-	private static final long serialVersionUID = 1L;
+    @Column(name="data_nascimento")
+    private LocalDate dataNascimento;
 
-	private String senha;
+    @Column(name="nome_mae")
+    private String nomeMae;
 
-    private String crm;
+    @Column(name="nome_pai")
+    private String nomePai;
 
-	@JsonIgnore
-	@OneToMany(mappedBy="medico", fetch=FetchType.LAZY)
+    @JsonIgnore
+	@OneToMany(mappedBy="paciente", fetch=FetchType.LAZY)
 	private List<Consulta> consultas;
 }
