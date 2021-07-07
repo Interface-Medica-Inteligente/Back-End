@@ -63,18 +63,44 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDTO) {
-		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDTO.getEmail());
+	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDto) {
+		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDto.getEmail());
 
 		if (!medico.isPresent()) {
 			throw new RegraNegocioException("Médico não encontrado para o email informado");
 		}
 
-		if (!medico.get().getSenha().equals(medicoAutenticarDTO.getSenha())) {
+		if (!medico.get().getSenha().equals(medicoAutenticarDto.getSenha())) {
 			throw new RegraNegocioException("Senha inválida");
 		}
 
 		return medico.get().getId();
+	}
+
+	@Override
+	public Long editar(long id, MedicoDTO medicoDto) {
+		Medico medico = medicoRepository.findById(id).map(med -> {
+			if(!medicoDto.getCpf().isEmpty()) {
+				med.setCpf(med.getCpf());
+			}
+
+			if(!medicoDto.getCrm().isEmpty()) {
+				med.setCrm(medicoDto.getCrm());
+			}
+
+			if(!medicoDto.getEmail().isEmpty()) {
+				med.setEmail(medicoDto.getEmail());
+			}
+
+			if(!medicoDto.getNome().isEmpty()) {
+				med.setNome(medicoDto.getNome());
+			}
+
+			return medicoRepository.save(med);
+		}
+		).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
+
+		return medico.getId();
 	}
 
 }

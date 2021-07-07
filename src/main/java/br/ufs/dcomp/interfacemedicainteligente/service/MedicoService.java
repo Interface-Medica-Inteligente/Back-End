@@ -11,7 +11,9 @@ public interface MedicoService {
 
 	MedicoDTO findById(long idMedico);
 
-	Long authenticate(MedicoAtenticarDTO medicoAutenticarDTO);
+	Long authenticate(MedicoAtenticarDTO medicoAutenticarDto);
 	
-    Long cadastrar(MedicoDTO medicoDTO);
+    Long cadastrar(MedicoDTO medicoDto);
+
+	Long editar(long id, MedicoDTO medicoDto);
 }
