@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -44,7 +45,7 @@ public class Prescricao implements Serializable {
     @JoinColumn(name="id_medicamento")
     private Medicamento medicamento;
     
-    @JsonIgnore
-    @OneToMany(mappedBy="prescricao", fetch=FetchType.LAZY)
-    private List<Receita> receitas;
+    @ManyToOne
+    @JoinColumn(name="id_receita")
+    private Receita receita;
 }
