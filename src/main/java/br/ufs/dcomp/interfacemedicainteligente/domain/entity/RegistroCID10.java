@@ -25,7 +25,7 @@ public class RegistroCID10 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_registro_cid")
     private Long id;
     
