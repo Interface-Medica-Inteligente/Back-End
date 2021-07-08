@@ -28,7 +28,7 @@ public class RegistroAtendimento implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_registro_atendimento")
     private Long id;
 
