@@ -63,18 +63,59 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDTO) {
-		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDTO.getEmail());
+	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDto) {
+		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDto.getEmail());
 
 		if (!medico.isPresent()) {
 			throw new RegraNegocioException("Médico não encontrado para o email informado");
 		}
 
-		if (!medico.get().getSenha().equals(medicoAutenticarDTO.getSenha())) {
+		if (!medico.get().getSenha().equals(medicoAutenticarDto.getSenha())) {
 			throw new RegraNegocioException("Senha inválida");
 		}
 
 		return medico.get().getId();
+	}
+
+	@Override
+	public Long editar(long id, MedicoDTO medicoDto) {
+		Medico medico = medicoRepository.findById(id).map(med -> {
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCpf())) {
+				med.setCpf(medicoDto.getCpf());
+			}
+
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCrm())) {
+				med.setCrm(medicoDto.getCrm());
+			}
+
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getEmail())) {
+				med.setEmail(medicoDto.getEmail());
+			}
+
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getNome())) {
+				med.setNome(medicoDto.getNome());
+			}
+
+			if(medicoDto.getSexo() != '\u0000') {
+				med.setSexo(medicoDto.getSexo());
+			}
+
+			return medicoRepository.save(med);
+		}
+		).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
+
+		return medico.getId();
+	}
+
+	@Override
+	public MedicoDTO consultar(String cpf) {
+		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
+
+		if(medico.isPresent()) {
+			return new MedicoDTO(medico.get());
+		}
+
+		throw new RegraNegocioException("Não existe medico cadastrado para este cpf");
 	}
 
 }
