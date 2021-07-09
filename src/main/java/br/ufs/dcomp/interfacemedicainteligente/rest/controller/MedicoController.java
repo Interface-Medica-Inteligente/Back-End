@@ -34,7 +34,7 @@ public class MedicoController {
 
 	@GetMapping("/findById/{idMedico}")
 	@ResponseStatus(OK)
-	public MedicoDTO findById(@PathVariable long idMedico) {
+	public MedicoDTO findById(@PathVariable Long idMedico) {
 		return medicoService.findById(idMedico);
 	}
 
@@ -52,7 +52,7 @@ public class MedicoController {
 
 	@PutMapping("/editar/{idMedico}")
 	@ResponseStatus(OK)
-	public Long editar(@PathVariable long idMedico, @RequestBody MedicoDTO medicoDto) {
+	public Long editar(@PathVariable Long idMedico, @RequestBody MedicoDTO medicoDto) {
 		return medicoService.editar(idMedico, medicoDto);
 	}
 

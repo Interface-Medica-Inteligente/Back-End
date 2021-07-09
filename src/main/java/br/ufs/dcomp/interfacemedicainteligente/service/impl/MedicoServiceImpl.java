@@ -1,5 +1,6 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepository;
@@ -80,19 +82,19 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public Long editar(long id, MedicoDTO medicoDto) {
 		Medico medico = medicoRepository.findById(id).map(med -> {
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCpf())) {
+			if(StringUtils.hasLength(medicoDto.getCpf())) {
 				med.setCpf(medicoDto.getCpf());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCrm())) {
+			if(StringUtils.hasLength(medicoDto.getCrm())) {
 				med.setCrm(medicoDto.getCrm());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getEmail())) {
+			if(StringUtils.hasLength(medicoDto.getEmail())) {
 				med.setEmail(medicoDto.getEmail());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getNome())) {
+			if(StringUtils.hasLength(medicoDto.getNome())) {
 				med.setNome(medicoDto.getNome());
 			}
 
