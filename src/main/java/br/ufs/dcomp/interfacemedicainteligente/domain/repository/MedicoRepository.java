@@ -9,5 +9,7 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
     
 	Optional<Medico> findByEmail(String email);
+
+	Optional<Medico> findByCpf(String cpf);
 	
 }

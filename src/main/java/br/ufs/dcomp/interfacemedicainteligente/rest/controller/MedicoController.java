@@ -50,9 +50,15 @@ public class MedicoController {
 		return medicoService.cadastrar(medicoDto);
 	}
 
-	@PutMapping
+	@PutMapping("/editar/{idMedico}")
 	@ResponseStatus(OK)
 	public Long editar(@PathVariable long idMedico, @RequestBody MedicoDTO medicoDto) {
 		return medicoService.editar(idMedico, medicoDto);
+	}
+
+	@GetMapping("/consultarMedico/{cpf}")
+	@ResponseStatus(OK)
+	public MedicoDTO consultar(@PathVariable String cpf) {
+		return medicoService.consultar(cpf);
 	}
 }

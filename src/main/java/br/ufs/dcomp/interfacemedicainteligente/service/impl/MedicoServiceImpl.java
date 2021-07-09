@@ -80,20 +80,24 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public Long editar(long id, MedicoDTO medicoDto) {
 		Medico medico = medicoRepository.findById(id).map(med -> {
-			if(!medicoDto.getCpf().isEmpty()) {
-				med.setCpf(med.getCpf());
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCpf())) {
+				med.setCpf(medicoDto.getCpf());
 			}
 
-			if(!medicoDto.getCrm().isEmpty()) {
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCrm())) {
 				med.setCrm(medicoDto.getCrm());
 			}
 
-			if(!medicoDto.getEmail().isEmpty()) {
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getEmail())) {
 				med.setEmail(medicoDto.getEmail());
 			}
 
-			if(!medicoDto.getNome().isEmpty()) {
+			if(org.springframework.util.StringUtils.hasLength(medicoDto.getNome())) {
 				med.setNome(medicoDto.getNome());
+			}
+
+			if(medicoDto.getSexo() != '\u0000') {
+				med.setSexo(medicoDto.getSexo());
 			}
 
 			return medicoRepository.save(med);
@@ -101,6 +105,17 @@ public class MedicoServiceImpl implements MedicoService {
 		).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
 
 		return medico.getId();
+	}
+
+	@Override
+	public MedicoDTO consultar(String cpf) {
+		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
+
+		if(medico.isPresent()) {
+			return new MedicoDTO(medico.get());
+		}
+
+		throw new RegraNegocioException("Não existe medico cadastrado para este cpf");
 	}
 
 }
