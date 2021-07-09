@@ -24,7 +24,9 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name="id_pessoa")
 public class Paciente extends Pessoa {
 
-    @Column(name="data_nascimento")
+	private static final long serialVersionUID = 1L;
+
+	@Column(name="data_nascimento")
     private LocalDate dataNascimento;
 
     @Column(name="nome_mae")
