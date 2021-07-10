@@ -28,43 +28,43 @@ public class RegistroAtendimentoController {
 
 	@PostMapping("/cadastrar-cid")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCID10(@RequestBody CID10DTO cid10DTO) {
-		return registroAtendimentoService.cadastrarCID10(cid10DTO);
+	public Long cadastrarCid(@RequestBody CID10DTO cid10Dto) {
+		return registroAtendimentoService.cadastrarCid(cid10Dto);
 	}
 
 	@GetMapping("/consultar-cid")
 	@ResponseStatus(OK)
-	public List<CID10DTO> consultarCID10() {
-		return registroAtendimentoService.consultarCID10();
+	public List<CID10DTO> consultarCid() {
+		return registroAtendimentoService.consultarCid();
 	}
 
 	@PostMapping("/cadastrar-cnes")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCNES(@RequestBody CNESDTO cnesDTO) {
-		return registroAtendimentoService.cadastrarCNES(cnesDTO);
+	public Long cadastrarCnes(@RequestBody CNESDTO cnesDto) {
+		return registroAtendimentoService.cadastrarCnes(cnesDto);
 	}
 
 	@GetMapping("/consultar-cnes")
 	@ResponseStatus(OK)
-	public List<CNESDTO> consultarCNES() {
-		return registroAtendimentoService.consultarCNES();
+	public List<CNESDTO> consultarCnes() {
+		return registroAtendimentoService.consultarCnes();
 	}
 
-	@PostMapping("/cadastrar")
+	@PostMapping("/cadastrar-registro-atendimento")
 	@ResponseStatus(CREATED)
-	public Long cadastrar(@RequestBody RegistroAtendimentoDTO registroAtendimentoDTO) {
-		return registroAtendimentoService.cadastrar(registroAtendimentoDTO);
+	public Long cadastrarRegistroAtendimento(@RequestBody RegistroAtendimentoDTO registroAtendimentoDto) {
+		return registroAtendimentoService.cadastrarRegistroAtendimento(registroAtendimentoDto);
 	}
 
-	@PostMapping("/cadastrar-registrocid10")
+	@PostMapping("/cadastrar-registro-cid10")
 	@ResponseStatus(CREATED)
-	public Long cadastrarRegistroCID10(@RequestBody RegistroCID10DTO registroCID10DTO) {
-		return registroAtendimentoService.cadastrarRegistroCID10(registroCID10DTO);
+	public Long cadastrarRegistroCid(@RequestBody RegistroCID10DTO registroCID10Dto) {
+		return registroAtendimentoService.cadastrarRegistroCid(registroCID10Dto);
 	}
 
-	@GetMapping("/consultar-registrocid10")
+	@GetMapping("/consultar-registro-cid10")
 	@ResponseStatus(OK)
-	public List<RegistroCID10DTO> consultarRegistroCID10() {
-		return registroAtendimentoService.consultarRegistroCID10();
+	public List<RegistroCID10DTO> consultarRegistroCid() {
+		return registroAtendimentoService.consultarRegistroCid();
 	}
 }

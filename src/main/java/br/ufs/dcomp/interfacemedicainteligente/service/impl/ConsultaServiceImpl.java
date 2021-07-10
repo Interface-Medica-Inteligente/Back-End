@@ -36,27 +36,27 @@ public class ConsultaServiceImpl implements ConsultaService {
 	private ConsultaRepository consultaRepositorio;
 
 	@Override
-	public Long cadastrarPaciente(PacienteDTO pacienteDTO) {
-		if (!ValidatorDocumentUseful.validarCpf(pacienteDTO.getCpf()))
+	public Long cadastrarPaciente(PacienteDTO pacienteDto) {
+		if (!ValidatorDocumentUseful.validarCpf(pacienteDto.getCpf()))
 			throw new RegraNegocioException("CPF Inválido.");
 
 		Paciente paciente = new Paciente();
 
-		paciente.setNome(pacienteDTO.getNome());
-		paciente.setEmail(pacienteDTO.getEmail());
-		paciente.setCpf(pacienteDTO.getCpf());
-		paciente.setSexo(pacienteDTO.getSexo());
-		paciente.setDataNascimento(pacienteDTO.getDataNascimento());
-		paciente.setNomeMae(pacienteDTO.getNomeMae());
-		paciente.setNomePai(pacienteDTO.getNomePai());
+		paciente.setNome(pacienteDto.getNome());
+		paciente.setEmail(pacienteDto.getEmail());
+		paciente.setCpf(pacienteDto.getCpf());
+		paciente.setSexo(pacienteDto.getSexo());
+		paciente.setDataNascimento(pacienteDto.getDataNascimento());
+		paciente.setNomeMae(pacienteDto.getNomeMae());
+		paciente.setNomePai(pacienteDto.getNomePai());
 
 		return pacienteRepositorio.save(paciente).getId();
 	}
 
 	@Override
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO cpf) {
+	public PacienteDTO consultarPaciente(PessoaDocumentoDTO pessoaDocumentoDto) {
 
-		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(cpf.getDocumentoPessoa());
+		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(pessoaDocumentoDto.getCpf());
 		if (paciente.isPresent()) {
 			return new PacienteDTO(paciente.get());
 		}
@@ -64,20 +64,20 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public Long editarPaciente(PacienteDTO paciente) {
+	public Long editarPaciente(PacienteDTO pacienteDto) {
 		return null;
 	}
 
 	@Override
-	public Long cadastrarConsulta(ConsultaDTO consultaDTO) {
+	public Long cadastrarConsulta(ConsultaDTO consultaDto) {
 
-		if (consultaDTO.getIdMedico() > 0L && consultaDTO.getIdPaciente() > 0L) {
+		if (consultaDto.getMedico() > 0L && consultaDto.getPaciente() > 0L) {
 			Medico medico = new Medico();
 			Paciente paciente = new Paciente();
 			Consulta consulta = new Consulta();
 
-			medico.setId(consultaDTO.getIdMedico());
-			paciente.setId(consultaDTO.getIdPaciente());
+			medico.setId(consultaDto.getMedico());
+			paciente.setId(consultaDto.getPaciente());
 
 			consulta.setMedico(medico);
 			consulta.setPaciente(paciente);
@@ -92,12 +92,12 @@ public class ConsultaServiceImpl implements ConsultaService {
 	@Override
 	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDTO) {
 
-		if (atendimentoDTO.getIdConsulta() > 0L && atendimentoDTO.getIdReceita() > 0L) {
+		if (atendimentoDTO.getConsulta() > 0L && atendimentoDTO.getReceita() > 0L) {
 			Consulta consulta = new Consulta();
 			Receita receita = new Receita();
 
-			consulta.setId(atendimentoDTO.getIdConsulta());
-			receita.setId(atendimentoDTO.getIdReceita());
+			consulta.setId(atendimentoDTO.getConsulta());
+			receita.setId(atendimentoDTO.getReceita());
 
 			Atendimento atendimento = new Atendimento();
 
@@ -115,8 +115,8 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public List<AtendimentoDTO> consultar(PessoaDocumentoDTO documentoPaciente) {
-		List<Atendimento> listaAtendimento = atendimentoRepositorio.consultar(documentoPaciente.getDocumentoPessoa());
+	public List<AtendimentoDTO> consultarAtendimento(PessoaDocumentoDTO documentoPaciente) {
+		List<Atendimento> listaAtendimento = atendimentoRepositorio.consultar(documentoPaciente.getCpf());
 		return listaAtendimento.stream().map(atendimento -> new AtendimentoDTO(atendimento))
 				.collect(Collectors.toList());
 	}

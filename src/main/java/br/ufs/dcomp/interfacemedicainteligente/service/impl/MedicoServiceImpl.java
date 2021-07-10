@@ -15,6 +15,7 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepositor
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 
@@ -65,7 +66,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDto) {
+	public Long autenticar(MedicoAtenticarDTO medicoAutenticarDto) {
 		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDto.getEmail());
 
 		if (!medico.isPresent()) {
@@ -111,8 +112,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public MedicoDTO consultar(String cpf) {
-		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
+	public MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto) {
+		Optional<Medico> medico = medicoRepository.findByCpf(pessoaDocumentoDto.getCpf());
 
 		if (medico.isPresent()) {
 			return new MedicoDTO(medico.get());

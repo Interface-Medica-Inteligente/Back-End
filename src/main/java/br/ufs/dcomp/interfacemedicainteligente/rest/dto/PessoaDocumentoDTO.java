@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter @Setter
 public class PessoaDocumentoDTO {
 
-	private String documentoPessoa;
+	private String cpf;
 
 	@JsonCreator
-	public PessoaDocumentoDTO(@JsonProperty("documentoPessoa") String documentoPessoa) {
-		this.documentoPessoa = documentoPessoa;
+	public PessoaDocumentoDTO(@JsonProperty("cpf") String cpf) {
+		this.cpf = cpf;
 	}
 
 }

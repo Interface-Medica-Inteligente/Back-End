@@ -9,12 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ConsultaDTO {
 
-	private Long idMedico;
+	private Long medico;
 
-	private Long idPaciente;
+	private Long paciente;
 
 	public ConsultaDTO(Consulta consulta) {
-		this.idPaciente = consulta.getPaciente().getId();
-		this.idMedico = consulta.getMedico().getId();
+		this.paciente = consulta.getPaciente().getId();
+		this.medico = consulta.getMedico().getId();
 	}
 }

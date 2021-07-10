@@ -11,7 +11,7 @@ public interface ReceitaService {
 
     List<ReceitaDTO> consultarReceita();
 
-    Long cadastrarPrescricao(PrescricaoDTO prescricaoDTO);
+    Long cadastrarPrescricao(PrescricaoDTO prescricaoDto);
 
     List<PrescricaoDTO> consultarPrescricao();
 

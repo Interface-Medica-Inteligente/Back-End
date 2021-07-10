@@ -25,37 +25,37 @@ public class ReceitaController {
     @Autowired
     ReceitaService receitaService;
 
-    @PostMapping
+    @PostMapping("/cadastrar-receita")
     @ResponseStatus(CREATED)
     public Long cadastrarReceita(@RequestBody ReceitaDTO receitaDto) {
         return receitaService.cadastrarReceita(receitaDto);
     }
 
-    @GetMapping
+    @GetMapping("consultar-receita")
     @ResponseStatus(OK)
     public List<ReceitaDTO> consultarReceita() {
         return receitaService.consultarReceita();
     }
 
-    @PostMapping("/cadastrarPrescricao")
+    @PostMapping("/cadastrar-prescricao")
     @ResponseStatus(CREATED)
     public Long cadastrarPrescricao(@RequestBody PrescricaoDTO prescricaoDto) {
         return receitaService.cadastrarPrescricao(prescricaoDto);
     }
 
-    @GetMapping("/consultarPrescricao")
+    @GetMapping("/consultar-prescricao")
     @ResponseStatus(OK)
     public List<PrescricaoDTO> consultarPrescricao() {
         return receitaService.consultarPrescricao(); 
     }
 
-    @PostMapping("/cadastrarMedicamento")
+    @PostMapping("/cadastrar-medicamento")
     @ResponseStatus(CREATED)
     public Long cadastrarMedicamento(@RequestBody MedicamentoDTO MedicamentoDto) {
         return receitaService.cadastrarMedicamento(MedicamentoDto);
     }
 
-    @GetMapping("/consultarMedicamento")
+    @PostMapping("/consultar-medicamento")
     @ResponseStatus(OK)
     public List<MedicamentoDTO> consultarMedicamento(@RequestBody MedicamentoDTO medicamentoDto) {
         return receitaService.consultarMedicamento(medicamentoDto); 

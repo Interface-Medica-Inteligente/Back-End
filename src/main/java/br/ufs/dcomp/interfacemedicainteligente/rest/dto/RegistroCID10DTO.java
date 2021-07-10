@@ -9,12 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegistroCID10DTO {
 
-	private Long idCID10;
+	private Long cid10;
 
-	private Long idRegistroAtendimento;
+	private Long registroAtendimento;
 
 	public RegistroCID10DTO(RegistroCID10 registroCID10) {
-		this.idCID10 = registroCID10.getCid10().getId();
-		this.idRegistroAtendimento = registroCID10.getRegistroAtendimento().getId();
+		this.cid10 = registroCID10.getCid10().getId();
+		this.registroAtendimento = registroCID10.getRegistroAtendimento().getId();
 	}
 }
