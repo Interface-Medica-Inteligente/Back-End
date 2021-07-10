@@ -79,30 +79,30 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public Long editar(long id, MedicoDTO medicoDto) {
+
 		Medico medico = medicoRepository.findById(id).map(med -> {
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCpf())) {
+			if (org.springframework.util.StringUtils.hasLength(medicoDto.getCpf())) {
 				med.setCpf(medicoDto.getCpf());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getCrm())) {
+			if (org.springframework.util.StringUtils.hasLength(medicoDto.getCrm())) {
 				med.setCrm(medicoDto.getCrm());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getEmail())) {
+			if (org.springframework.util.StringUtils.hasLength(medicoDto.getEmail())) {
 				med.setEmail(medicoDto.getEmail());
 			}
 
-			if(org.springframework.util.StringUtils.hasLength(medicoDto.getNome())) {
+			if (org.springframework.util.StringUtils.hasLength(medicoDto.getNome())) {
 				med.setNome(medicoDto.getNome());
 			}
 
-			if(medicoDto.getSexo() != '\u0000') {
+			if (medicoDto.getSexo() != '\u0000') {
 				med.setSexo(medicoDto.getSexo());
 			}
 
 			return medicoRepository.save(med);
-		}
-		).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
+		}).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
 
 		return medico.getId();
 	}
@@ -111,7 +111,7 @@ public class MedicoServiceImpl implements MedicoService {
 	public MedicoDTO consultar(String cpf) {
 		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
 
-		if(medico.isPresent()) {
+		if (medico.isPresent()) {
 			return new MedicoDTO(medico.get());
 		}
 

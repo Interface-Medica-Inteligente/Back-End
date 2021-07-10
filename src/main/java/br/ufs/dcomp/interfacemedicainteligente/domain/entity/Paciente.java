@@ -1,16 +1,11 @@
 package br.ufs.dcomp.interfacemedicainteligente.domain.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +30,4 @@ public class Paciente extends Pessoa {
     @Column(name="nome_pai")
     private String nomePai;
 
-    @JsonIgnore
-	@OneToMany(mappedBy="paciente", fetch=FetchType.LAZY)
-	private List<Consulta> consultas;
 }

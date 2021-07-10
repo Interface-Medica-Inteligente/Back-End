@@ -2,6 +2,8 @@ package br.ufs.dcomp.interfacemedicainteligente.rest.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Paciente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +22,7 @@ public class PacienteDTO {
 
 	private char sexo;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataNascimento;
 
 	private String nomeMae;

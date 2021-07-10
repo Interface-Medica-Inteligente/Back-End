@@ -10,12 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ConsultaDTO {
 
-	private MedicoDTO medicoDTO;
+	private Long idMedico;
 
-	private PacienteDTO pacienteDTO;
+	private Long idPaciente;
 
 	public ConsultaDTO(Consulta consulta) {
-		this.pacienteDTO = new PacienteDTO(consulta.getPaciente());
-		this.medicoDTO = new MedicoDTO(consulta.getMedico());
+		this.idPaciente = consulta.getPaciente().getId();
+		this.idMedico = consulta.getMedico().getId();
 	}
 }

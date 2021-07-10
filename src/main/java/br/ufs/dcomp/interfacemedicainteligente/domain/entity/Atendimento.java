@@ -44,7 +44,7 @@ public class Atendimento implements Serializable {
     private Consulta consulta;
 
     @OneToOne
-    @JoinColumn(name="id_receita")
-    private Receita receita;
+	@JoinColumn(name = "id_receita")
+	private Receita receita;
 
 }
