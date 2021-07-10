@@ -10,6 +10,7 @@ import lombok.Setter;
 public class CNESDTO {
 
 	private int codigo;
+	
 	private String nomeEstabelecimento;
 	
 	public CNESDTO(CNES cnes) {

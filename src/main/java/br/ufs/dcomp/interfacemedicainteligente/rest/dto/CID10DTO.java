@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 public class CID10DTO {
 
 	private String codigo;
+	
 	private String descricao;
 
 	public CID10DTO(CID10 cid) {
