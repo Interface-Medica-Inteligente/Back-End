@@ -1,18 +1,13 @@
 package br.ufs.dcomp.interfacemedicainteligente.domain.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,9 +31,5 @@ public class CNES implements Serializable {
 
     @Column(name="nome_estabelecimento")
     private String nomeEstabelecimento;
-
-    @JsonIgnore
-    @OneToMany(mappedBy="cnes", fetch=FetchType.LAZY)
-    private List<RegistroAtendimento> registrosAtendimento;
 
 }

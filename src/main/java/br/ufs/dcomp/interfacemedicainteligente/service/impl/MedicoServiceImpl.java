@@ -81,7 +81,9 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public Long editar(long id, MedicoDTO medicoDto) {
+
 		Medico medico = medicoRepository.findById(id).map(med -> {
+
 			if(StringUtils.hasLength(medicoDto.getCpf())) {
 				med.setCpf(medicoDto.getCpf());
 			}
@@ -98,13 +100,12 @@ public class MedicoServiceImpl implements MedicoService {
 				med.setNome(medicoDto.getNome());
 			}
 
-			if(medicoDto.getSexo() != '\u0000') {
+			if (medicoDto.getSexo() != '\u0000') {
 				med.setSexo(medicoDto.getSexo());
 			}
 
 			return medicoRepository.save(med);
-		}
-		).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
+		}).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
 
 		return medico.getId();
 	}
@@ -113,7 +114,7 @@ public class MedicoServiceImpl implements MedicoService {
 	public MedicoDTO consultar(String cpf) {
 		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
 
-		if(medico.isPresent()) {
+		if (medico.isPresent()) {
 			return new MedicoDTO(medico.get());
 		}
 

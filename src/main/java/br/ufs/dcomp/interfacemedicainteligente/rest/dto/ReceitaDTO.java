@@ -11,12 +11,12 @@ public class ReceitaDTO {
 
     private String descricao;
 
-    private Boolean segunda_via;
+    private Boolean segundaVia;
 
     public ReceitaDTO(Receita receita) {
 
         descricao = receita.getDescricao();
         
-        segunda_via = receita.getSegundaVia();
+        segundaVia = receita.getSegundaVia();
     }
 }

@@ -37,7 +37,7 @@ public class ReceitaServiceImpl implements ReceitaService {
 
         receita.setDescricao(receitaDto.getDescricao());
         receita.setDataEmissao(LocalDate.now());
-        receita.setSegundaVia(receitaDto.getSegunda_via());
+        receita.setSegundaVia(receitaDto.getSegundaVia());
 
         receitaRepository.save(receita);
 

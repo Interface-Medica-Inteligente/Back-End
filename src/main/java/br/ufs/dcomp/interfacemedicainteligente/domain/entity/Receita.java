@@ -41,4 +41,5 @@ public class Receita implements Serializable {
 
     @OneToMany(mappedBy="receita", fetch=FetchType.LAZY)
     private List<Prescricao> prescricoes;
+
 }
