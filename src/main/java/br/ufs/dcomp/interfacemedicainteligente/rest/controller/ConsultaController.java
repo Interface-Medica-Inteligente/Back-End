@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 
 @RestController
@@ -32,7 +33,7 @@ public class ConsultaController {
 
 	@PostMapping("/consultar-paciente")
 	@ResponseStatus(OK)
-	public PacienteDTO consultarPaciente(@RequestBody String cpf) {
+	public PacienteDTO consultarPaciente(@RequestBody PessoaDocumentoDTO cpf) {
 		return consultaService.consultarPaciente(cpf);
 	}
 
@@ -50,7 +51,7 @@ public class ConsultaController {
 
 	@PostMapping("/consultar")
 	@ResponseStatus(OK)
-	public List<AtendimentoDTO> consultar(@RequestBody String documentoPaciente) {
+	public List<AtendimentoDTO> consultar(@RequestBody PessoaDocumentoDTO documentoPaciente) {
 		return consultaService.consultar(documentoPaciente);
 	}
 }

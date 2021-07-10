@@ -19,6 +19,7 @@ import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 
@@ -53,9 +54,9 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public PacienteDTO consultarPaciente(String cpf) {
+	public PacienteDTO consultarPaciente(PessoaDocumentoDTO cpf) {
 
-		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(cpf);
+		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(cpf.getDocumentoPessoa());
 		if (paciente.isPresent()) {
 			return new PacienteDTO(paciente.get());
 		}
@@ -114,15 +115,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public List<AtendimentoDTO> consultar(String documentoPaciente) {
-		List<Atendimento> listaAtendimento = atendimentoRepositorio.consultar(documentoPaciente);
+	public List<AtendimentoDTO> consultar(PessoaDocumentoDTO documentoPaciente) {
+		List<Atendimento> listaAtendimento = atendimentoRepositorio.consultar(documentoPaciente.getDocumentoPessoa());
 		return listaAtendimento.stream().map(atendimento -> new AtendimentoDTO(atendimento))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public void imprimir() {
-		// TODO Auto-generated method stub
+	public void gerarDocumentoPDF() {
 
 	}
 

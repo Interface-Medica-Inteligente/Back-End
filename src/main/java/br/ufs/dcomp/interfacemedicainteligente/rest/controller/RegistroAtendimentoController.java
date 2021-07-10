@@ -28,8 +28,8 @@ public class RegistroAtendimentoController {
 
 	@PostMapping("/cadastrar-cid")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCID10(@RequestBody CID10DTO cid10dto) {
-		return registroAtendimentoService.cadastrarCID10(cid10dto);
+	public Long cadastrarCID10(@RequestBody CID10DTO cid10DTO) {
+		return registroAtendimentoService.cadastrarCID10(cid10DTO);
 	}
 
 	@GetMapping("/consultar-cid")

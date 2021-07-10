@@ -38,7 +38,7 @@ public class MedicoController {
 		return medicoService.findById(idMedico);
 	}
 
-	@GetMapping("/authenticate")
+	@PostMapping("/authenticate")
 	@ResponseStatus(OK)
 	public Long authenticate(@RequestBody MedicoAtenticarDTO medicoAutenticarDTO) {
 		return medicoService.authenticate(medicoAutenticarDTO);

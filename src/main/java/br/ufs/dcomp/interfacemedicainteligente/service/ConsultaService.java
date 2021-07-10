@@ -5,12 +5,13 @@ import java.util.List;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 
 public interface ConsultaService {
 
 	public Long cadastrarPaciente(PacienteDTO paciente);
 
-	public PacienteDTO consultarPaciente(String cpf);
+	public PacienteDTO consultarPaciente(PessoaDocumentoDTO cpf);
 
 	public Long editarPaciente(PacienteDTO paciente);
 
@@ -18,7 +19,7 @@ public interface ConsultaService {
 
 	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDTO);
 
-	public List<AtendimentoDTO> consultar(String documentoPaciente);
+	public List<AtendimentoDTO> consultar(PessoaDocumentoDTO documentoPaciente);
 
-	public void imprimir();
+	public void gerarDocumentoPDF();
 }
