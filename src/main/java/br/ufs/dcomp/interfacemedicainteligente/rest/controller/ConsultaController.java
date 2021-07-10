@@ -27,8 +27,8 @@ public class ConsultaController {
 
 	@PostMapping("/cadastrar-paciente")
 	@ResponseStatus(CREATED)
-	public Long cadastrarPaciente(@RequestBody PacienteDTO pacienteDTO) {
-		return consultaService.cadastrarPaciente(pacienteDTO);
+	public Long cadastrarPaciente(@RequestBody PacienteDTO pacienteDto) {
+		return consultaService.cadastrarPaciente(pacienteDto);
 	}
 
 	@PostMapping("/consultar-paciente")
@@ -39,19 +39,19 @@ public class ConsultaController {
 
 	@PostMapping("/cadastrar-consulta")
 	@ResponseStatus(CREATED)
-	public Long cadastrarConsulta(@RequestBody ConsultaDTO consultaDTO) {
-		return consultaService.cadastrarConsulta(consultaDTO);
+	public Long cadastrarConsulta(@RequestBody ConsultaDTO consultaDto) {
+		return consultaService.cadastrarConsulta(consultaDto);
 	}
 
 	@PostMapping("/cadastrar-atendimento")
 	@ResponseStatus(CREATED)
-	public Long cadastrarAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
-		return consultaService.cadastrarAtendimento(atendimentoDTO);
+	public Long cadastrarAtendimento(@RequestBody AtendimentoDTO atendimentoDto) {
+		return consultaService.cadastrarAtendimento(atendimentoDto);
 	}
 
 	@PostMapping("/consultar")
 	@ResponseStatus(OK)
-	public List<AtendimentoDTO> consultar(@RequestBody PessoaDocumentoDTO documentoPaciente) {
-		return consultaService.consultar(documentoPaciente);
+	public List<AtendimentoDTO> consultarAtendimento(@RequestBody PessoaDocumentoDTO pessoaDocumentoDto) {
+		return consultaService.consultarAtendimento(pessoaDocumentoDto);
 	}
 }

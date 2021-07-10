@@ -38,7 +38,7 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	private RegistroCID10Repository registroCID10Repositorio;
 
 	@Override
-	public Long cadastrarCID10(CID10DTO cid10dto) {
+	public Long cadastrarCid(CID10DTO cid10dto) {
 		CID10 cid10 = new CID10();
 
 		cid10.setCodigo(cid10dto.getCodigo());
@@ -48,48 +48,48 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<CID10DTO> consultarCID10() {
+	public List<CID10DTO> consultarCid() {
 		List<CID10> listaCID10 = cidRepositorio.findAll();
 
 		return listaCID10.stream().map(cid10 -> new CID10DTO(cid10)).collect(Collectors.toList());
 	}
 
 	@Override
-	public Long cadastrarCNES(CNESDTO cnesDTO) {
+	public Long cadastrarCnes(CNESDTO cnesDto) {
 		CNES cnes = new CNES();
 
-		cnes.setCodigo(cnesDTO.getCodigo());
-		cnes.setNomeEstabelecimento(cnesDTO.getNomeEstabelecimento());
+		cnes.setCodigo(cnesDto.getCodigo());
+		cnes.setNomeEstabelecimento(cnesDto.getNomeEstabelecimento());
 
 		return cnesRepositorio.save(cnes).getId();
 	}
 
 	@Override
-	public List<CNESDTO> consultarCNES() {
+	public List<CNESDTO> consultarCnes() {
 		List<CNES> listaCnes = cnesRepositorio.findAll();
 
 		return listaCnes.stream().map(cnes -> new CNESDTO(cnes)).collect(Collectors.toList());
 	}
 
 	@Override
-	public Long cadastrar(RegistroAtendimentoDTO registroAtendimentoDTO) {
+	public Long cadastrarRegistroAtendimento(RegistroAtendimentoDTO registroAtendimentoDto) {
 
-		if (registroAtendimentoDTO.getIdAtendimento() > 0L) {
+		if (registroAtendimentoDto.getAtendimento() > 0L && registroAtendimentoDto.getCnes() > 0L) {
 			Atendimento atendimento = new Atendimento();
 
-			atendimento.setId(registroAtendimentoDTO.getIdAtendimento());
+			atendimento.setId(registroAtendimentoDto.getAtendimento());
 
 			CNES cnes = new CNES();
 
-			cnes.setId(registroAtendimentoDTO.getIdCNES());
+			cnes.setId(registroAtendimentoDto.getCnes());
 
 			RegistroAtendimento registroAtendimento = new RegistroAtendimento();
 
-			registroAtendimento.setAnamnese(registroAtendimentoDTO.isAnamnese());
-			registroAtendimento.setAnamneseProgressao(registroAtendimentoDTO.getAnamneseProgessao());
+			registroAtendimento.setAnamnese(registroAtendimentoDto.isAnamnese());
+			registroAtendimento.setAnamneseProgressao(registroAtendimentoDto.getAnamneseProgessao());
 			registroAtendimento.setCnes(cnes);
 			registroAtendimento.setAtendimento(atendimento);
-			registroAtendimento.setEstadoTratamento(registroAtendimentoDTO.getEstadoTratamento());
+			registroAtendimento.setEstadoTratamento(registroAtendimentoDto.getEstadoTratamento());
 
 			return registroAtendimentoRepositorio.save(registroAtendimento).getId();
 		}
@@ -98,21 +98,21 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<RegistroAtendimentoDTO> consultar() {
+	public List<RegistroAtendimentoDTO> consultarRegistroAtendimento() {
 
 		return null;
 	}
 
 	@Override
-	public Long cadastrarRegistroCID10(RegistroCID10DTO registroCID10DTO) {
-		if (registroCID10DTO.getIdRegistroAtendimento() > 0L && registroCID10DTO.getIdCID10() > 0L) {
+	public Long cadastrarRegistroCid(RegistroCID10DTO registroCid10Dto) {
+		if (registroCid10Dto.getRegistroAtendimento() > 0L && registroCid10Dto.getCid10() > 0L) {
 			RegistroAtendimento registroAtendimento = new RegistroAtendimento();
 
-			registroAtendimento.setId(registroCID10DTO.getIdRegistroAtendimento());
+			registroAtendimento.setId(registroCid10Dto.getRegistroAtendimento());
 
 			CID10 cid10 = new CID10();
 
-			cid10.setId(registroCID10DTO.getIdCID10());
+			cid10.setId(registroCid10Dto.getCid10());
 
 			RegistroCID10 registroCID10 = new RegistroCID10();
 
@@ -126,7 +126,7 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<RegistroCID10DTO> consultarRegistroCID10() {
+	public List<RegistroCID10DTO> consultarRegistroCid() {
 		List<RegistroCID10> listaRegistroCID10 = registroCID10Repositorio.findAll();
 		return listaRegistroCID10.stream().map(registroCID10 -> new RegistroCID10DTO(registroCID10))
 				.collect(Collectors.toList());

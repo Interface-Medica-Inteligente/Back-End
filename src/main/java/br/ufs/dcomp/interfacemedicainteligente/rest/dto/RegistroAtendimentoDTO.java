@@ -16,16 +16,16 @@ public class RegistroAtendimentoDTO {
 
 	private boolean anamnese;
 
-	private Long idCNES;
+	private Long cnes;
 
-	private Long idAtendimento;
+	private Long atendimento;
 
 	public RegistroAtendimentoDTO(RegistroAtendimento registroAtendimento) {
 		this.estadoTratamento = registroAtendimento.getEstadoTratamento();
 		this.anamneseProgessao = registroAtendimento.getAnamneseProgressao();
 		this.anamnese = registroAtendimento.getAnamnese();
-		this.idCNES = registroAtendimento.getCnes().getId();
-		this.idAtendimento = registroAtendimento.getAtendimento().getId();
+		this.cnes = registroAtendimento.getCnes().getId();
+		this.atendimento = registroAtendimento.getAtendimento().getId();
 	}
 
 }

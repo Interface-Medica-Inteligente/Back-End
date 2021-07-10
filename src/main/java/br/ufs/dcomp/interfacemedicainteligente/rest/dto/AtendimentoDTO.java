@@ -22,15 +22,15 @@ public class AtendimentoDTO {
 
 	private double altura;
 
-	private Long idConsulta;
+	private Long consulta;
 
-	private Long idReceita;
+	private Long receita;
 
 	public AtendimentoDTO(Atendimento atendimento) {
 		this.dataAgendamento = atendimento.getDataAtendimento();
 		this.peso = atendimento.getPeso();
 		this.altura = atendimento.getAltura();
-		this.idConsulta = atendimento.getConsulta().getId();
-		this.idReceita = atendimento.getReceita().getId();
+		this.consulta = atendimento.getConsulta().getId();
+		this.receita = atendimento.getReceita().getId();
 	}
 }

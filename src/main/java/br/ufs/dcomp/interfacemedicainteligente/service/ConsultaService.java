@@ -9,17 +9,17 @@ import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 
 public interface ConsultaService {
 
-	public Long cadastrarPaciente(PacienteDTO paciente);
+	public Long cadastrarPaciente(PacienteDTO pacienteDto);
 
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO cpf);
+	public PacienteDTO consultarPaciente(PessoaDocumentoDTO pessoaDocumentoDto);
 
-	public Long editarPaciente(PacienteDTO paciente);
+	public Long editarPaciente(PacienteDTO pacienteDto);
 
-	public Long cadastrarConsulta(ConsultaDTO consultaDTO);
+	public Long cadastrarConsulta(ConsultaDTO consultaDto);
 
-	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDTO);
+	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto);
 
-	public List<AtendimentoDTO> consultar(PessoaDocumentoDTO documentoPaciente);
+	public List<AtendimentoDTO> consultarAtendimento(PessoaDocumentoDTO PessoaDocumentoDto);
 
 	public void gerarDocumentoPDF();
 }
