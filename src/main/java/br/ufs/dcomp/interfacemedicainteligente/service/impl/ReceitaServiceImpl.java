@@ -1,19 +1,25 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Atendimento;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medicamento;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Prescricao;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Receita;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicamentoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PrescricaoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ReceitaRepository;
+import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.FiltroReceitaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.InformacaoReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicamentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PrescricaoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ReceitaDTO;
@@ -32,21 +38,50 @@ public class ReceitaServiceImpl implements ReceitaService {
     private MedicamentoRepository medicamentoRepository;
 
     private Receita cadastrarReceita(ReceitaDTO receitaDto) {
-        Receita receita = new Receita();
+        Optional<Receita> receita = receitaRepository.findByIdAtendimento(receitaDto.getAtendimento());
 
-        receita.setDescricao(receitaDto.getDescricao());
-        receita.setDataEmissao(LocalDate.now());
-        receita.setSegundaVia(receitaDto.getSegundaVia());
+        if(receita.isPresent()) {
+            return receita.get();
+        } else {
+            Receita rec = new Receita();
+            Atendimento atendimento = new Atendimento();
 
-        receitaRepository.save(receita);
+            atendimento.setId(receitaDto.getAtendimento());
 
-        return receita;
+            rec.setDescricao(receitaDto.getDescricao());
+            rec.setDataEmissao(LocalDate.now());
+            rec.setSegundaVia(receitaDto.getSegundaVia());
+            rec.setAtendimento(atendimento);
+    
+            return receitaRepository.save(rec);
+        }
     }
 
     @Override
-    public List<ReceitaDTO> consultarReceita() {
+    public List<InformacaoReceitaDTO> consultarReceitas(Long idPaciente) {
+        Optional<Receita> receitas = receitaRepository.findByIdPaciente(idPaciente);
 
-        return null;
+        if(receitas.isPresent()) {
+            return converterReceitas(receitas);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private List<InformacaoReceitaDTO> converterReceitas(Optional<Receita> receitas) {
+        return receitas.stream().map(receita -> {
+            List<MedicamentoDTO> medicamentos = new ArrayList<>();
+            MedicamentoDTO medicamento = null;
+            
+            for(Prescricao prescricao : receita.getPrescricoes()) {
+                medicamento = new MedicamentoDTO(prescricao.getMedicamento().getNome());
+                medicamentos.add(medicamento);
+            }
+
+            InformacaoReceitaDTO receitaDto = new InformacaoReceitaDTO(receita.getId(), receita.getDataEmissao(), medicamentos);
+
+            return receitaDto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -71,17 +106,32 @@ public class ReceitaServiceImpl implements ReceitaService {
         if(medicamento.isPresent()) {
             return medicamento.get();
         } else {
-            medicamento.get().setNome(medicamentoDto.getNome());
+            Medicamento med = new Medicamento();
+            
+            med.setNome(medicamentoDto.getNome());
 
-            return medicamentoRepository.save(medicamento.get());
+            return medicamentoRepository.save(med);
             
         }
     }
-    
-    public List<MedicamentoDTO> consultarMedicamento(MedicamentoDTO medicamentoDto) {
-        List<Medicamento> medicamentos = medicamentoRepository.ConsultarPorNome(medicamentoDto.getNome());
 
-        return medicamentos.stream().map(medicamento -> new MedicamentoDTO(medicamento)).collect(Collectors.toList());
+    @Override
+    public List<InformacaoReceitaDTO> consultarReceitaPorFiltro(FiltroReceitaDTO filtroReceitaDto) {
+        Optional<Receita> receitas = null;
+
+        if(StringUtils.hasLength(filtroReceitaDto.getMedicamento())) {
+            receitas = receitaRepository.findByMedicamento(filtroReceitaDto.getMedicamento());
+        } else if(filtroReceitaDto.getDataEmissao() != null) {
+            receitas = receitaRepository.findByDataEmissao(filtroReceitaDto.getDataEmissao());
+        } else if(filtroReceitaDto.getReceita() != null) {
+            receitas = receitaRepository.findByFiltroId(filtroReceitaDto.getReceita());
+        }
+
+        if(receitas.isPresent()) {
+            return converterReceitas(receitas);
+        } 
+
+        throw new RegraNegocioException("Receita não encontrada");
     }
 
 }

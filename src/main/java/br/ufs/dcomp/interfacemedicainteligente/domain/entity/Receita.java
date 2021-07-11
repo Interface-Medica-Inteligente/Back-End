@@ -41,7 +41,7 @@ public class Receita implements Serializable {
     @Column(name="data_emissao")
     private LocalDate dataEmissao;
 
-    @OneToMany(mappedBy="receita", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy="receita", fetch=FetchType.EAGER)
 	private List<Prescricao> prescricoes;
 
 	@OneToOne
