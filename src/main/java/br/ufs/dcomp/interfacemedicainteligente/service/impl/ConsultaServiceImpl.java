@@ -51,7 +51,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 		Long idConsulta = cadastrarConsulta(new ConsultaDTO(cadastroProntuarioDto.getMedico(), paciente.get().getId()));
 
-		cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
+		Long idAtendimento = cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
 				cadastroProntuarioDto.getAltura(), idConsulta));
 
 		Optional<Prontuario> prontuario = prontuarioRepository.findByPaciente(paciente.get());
@@ -61,7 +61,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 			return prontuarioRepository.save(prontuario.get()).getId();
 		}
 
-		return prontuario.get().getId();
+		return idAtendimento;
 	}
 
 	@Override
@@ -139,4 +139,5 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 		return pacienteRepository.save(paciente);
 	}
+
 }
