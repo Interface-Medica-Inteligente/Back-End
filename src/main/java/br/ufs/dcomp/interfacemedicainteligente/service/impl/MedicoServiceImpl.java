@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepository;
@@ -60,12 +59,12 @@ public class MedicoServiceImpl implements MedicoService {
 			medico.setSexo(medicoDto.getSexo());
 			medico.setCrm(medicoDto.getCrm());
 			medico.setSenha(medicoDto.getSenha());
-	
+
 			medicoRepository.save(medico);
-	
+
 			return medico.getId();
-		} catch(DataIntegrityViolationException ex) {
-			 throw new RegraNegocioException("CPF já cadastrado no sistema");
+		} catch (DataIntegrityViolationException ex) {
+			throw new RegraNegocioException("CPF já cadastrado no sistema");
 		}
 	}
 
@@ -82,37 +81,6 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 
 		return medico.get().getId();
-	}
-
-	@Override
-	public Long editar(long id, MedicoDTO medicoDto) {
-
-		Medico medico = medicoRepository.findById(id).map(med -> {
-
-			if (StringUtils.hasLength(medicoDto.getCpf())) {
-				med.setCpf(medicoDto.getCpf());
-			}
-
-			if (StringUtils.hasLength(medicoDto.getCrm())) {
-				med.setCrm(medicoDto.getCrm());
-			}
-
-			if (StringUtils.hasLength(medicoDto.getEmail())) {
-				med.setEmail(medicoDto.getEmail());
-			}
-
-			if (StringUtils.hasLength(medicoDto.getNome())) {
-				med.setNome(medicoDto.getNome());
-			}
-
-			if (medicoDto.getSexo() != '\u0000') {
-				med.setSexo(medicoDto.getSexo());
-			}
-
-			return medicoRepository.save(med);
-		}).orElseThrow(() -> new RegraNegocioException("Médico não encontrado"));
-
-		return medico.getId();
 	}
 
 	@Override

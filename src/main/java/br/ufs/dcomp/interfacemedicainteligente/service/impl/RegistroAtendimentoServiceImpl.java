@@ -108,12 +108,6 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<RegistroAtendimentoDTO> consultarRegistroAtendimento() {
-
-		return null;
-	}
-
-	@Override
 	public Long cadastrarRegistroCid(RegistroCID10DTO registroCid10Dto) {
 		if (registroCid10Dto.getRegistroAtendimento() > 0L && registroCid10Dto.getCid10() > 0L) {
 			RegistroAtendimento registroAtendimento = new RegistroAtendimento();

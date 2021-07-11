@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -49,12 +48,6 @@ public class MedicoController {
 	@ResponseStatus(CREATED)
 	public Long cadastar(@RequestBody MedicoDTO medicoDto) {
 		return medicoService.cadastrar(medicoDto);
-	}
-
-	@PutMapping("/editar/{idMedico}")
-	@ResponseStatus(OK)
-	public Long editar(@PathVariable Long idMedico, @RequestBody MedicoDTO medicoDto) {
-		return medicoService.editar(idMedico, medicoDto);
 	}
 
 	@PostMapping("/consultar-medico")
