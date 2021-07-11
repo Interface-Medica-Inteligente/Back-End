@@ -12,7 +12,7 @@ public class PrescricaoDTO {
 
     private Integer quantidadeDiaria;
     
-    private Long medicamento;
+    private MedicamentoDTO medicamento;
 
-    private Long receita;
+    private ReceitaDTO receita;
 }

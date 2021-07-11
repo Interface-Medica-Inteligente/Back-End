@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicamentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PrescricaoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ReceitaService;
@@ -25,12 +24,6 @@ public class ReceitaController {
     @Autowired
     ReceitaService receitaService;
 
-    @PostMapping("/cadastrar-receita")
-    @ResponseStatus(CREATED)
-    public Long cadastrarReceita(@RequestBody ReceitaDTO receitaDto) {
-        return receitaService.cadastrarReceita(receitaDto);
-    }
-
     @GetMapping("consultar-receita")
     @ResponseStatus(OK)
     public List<ReceitaDTO> consultarReceita() {
@@ -41,24 +34,6 @@ public class ReceitaController {
     @ResponseStatus(CREATED)
     public Long cadastrarPrescricao(@RequestBody PrescricaoDTO prescricaoDto) {
         return receitaService.cadastrarPrescricao(prescricaoDto);
-    }
-
-    @GetMapping("/consultar-prescricao")
-    @ResponseStatus(OK)
-    public List<PrescricaoDTO> consultarPrescricao() {
-        return receitaService.consultarPrescricao(); 
-    }
-
-    @PostMapping("/cadastrar-medicamento")
-    @ResponseStatus(CREATED)
-    public Long cadastrarMedicamento(@RequestBody MedicamentoDTO MedicamentoDto) {
-        return receitaService.cadastrarMedicamento(MedicamentoDto);
-    }
-
-    @PostMapping("/consultar-medicamento")
-    @ResponseStatus(OK)
-    public List<MedicamentoDTO> consultarMedicamento(@RequestBody MedicamentoDTO medicamentoDto) {
-        return receitaService.consultarMedicamento(medicamentoDto); 
     }
     
 }
