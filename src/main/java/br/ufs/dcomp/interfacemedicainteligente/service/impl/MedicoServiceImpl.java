@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -50,18 +51,22 @@ public class MedicoServiceImpl implements MedicoService {
 		if (!ValidatorDocumentUseful.validarCpf(medicoDto.getCpf()))
 			throw new RegraNegocioException("CPF Inválido.");
 
-		Medico medico = new Medico();
+		try {
+			Medico medico = new Medico();
 
-		medico.setNome(medicoDto.getNome());
-		medico.setCpf(medicoDto.getCpf());
-		medico.setEmail(medicoDto.getEmail());
-		medico.setSexo(medicoDto.getSexo());
-		medico.setCrm(medicoDto.getCrm());
-		medico.setSenha(medicoDto.getSenha());
-
-		medicoRepository.save(medico);
-
-		return medico.getId();
+			medico.setNome(medicoDto.getNome());
+			medico.setCpf(medicoDto.getCpf());
+			medico.setEmail(medicoDto.getEmail());
+			medico.setSexo(medicoDto.getSexo());
+			medico.setCrm(medicoDto.getCrm());
+			medico.setSenha(medicoDto.getSenha());
+	
+			medicoRepository.save(medico);
+	
+			return medico.getId();
+		} catch(DataIntegrityViolationException ex) {
+			 throw new RegraNegocioException("CPF já cadastrado no sistema");
+		}
 	}
 
 	@Override
@@ -114,11 +119,11 @@ public class MedicoServiceImpl implements MedicoService {
 	public MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto) {
 		Optional<Medico> medico = medicoRepository.findByCpf(pessoaDocumentoDto.getCpf());
 
-		if (medico.isPresent()) {
-			return new MedicoDTO(medico.get());
+		if (medico.isEmpty()) {
+			throw new RegraNegocioException("Não existe medico cadastrado para este cpf");
 		}
 
-		throw new RegraNegocioException("Não existe medico cadastrado para este cpf");
+		return new MedicoDTO(medico.get());
 	}
 
 }

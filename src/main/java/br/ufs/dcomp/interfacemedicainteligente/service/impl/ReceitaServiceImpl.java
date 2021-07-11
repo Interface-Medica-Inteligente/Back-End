@@ -119,13 +119,13 @@ public class ReceitaServiceImpl implements ReceitaService {
     public List<InformacaoReceitaDTO> consultarReceitaPorFiltro(FiltroReceitaDTO filtroReceitaDto) {
         Optional<Receita> receitas = null;
 
-        if(StringUtils.hasLength(filtroReceitaDto.getMedicamento())) {
-            receitas = receitaRepository.findByMedicamento(filtroReceitaDto.getMedicamento());
-        } else if(filtroReceitaDto.getDataEmissao() != null) {
-            receitas = receitaRepository.findByDataEmissao(filtroReceitaDto.getDataEmissao());
-        } else if(filtroReceitaDto.getReceita() != null) {
-            receitas = receitaRepository.findByFiltroId(filtroReceitaDto.getReceita());
+        if(!StringUtils.hasLength(filtroReceitaDto.getMedicamento())
+            ||  filtroReceitaDto.getDataEmissao() == null
+            || filtroReceitaDto.getDataEmissao() == null) {
+            throw new RegraNegocioException("Preencha todos os campos da consulta");
         }
+
+        receitas = receitaRepository.findByFiltro(filtroReceitaDto.getReceita(), filtroReceitaDto.getDataEmissao(), filtroReceitaDto.getMedicamento());
 
         if(receitas.isPresent()) {
             return converterReceitas(receitas);
