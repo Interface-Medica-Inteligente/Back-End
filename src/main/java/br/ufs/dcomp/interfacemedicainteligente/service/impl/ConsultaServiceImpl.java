@@ -58,7 +58,9 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 		prontuario.setPaciente(paciente.get());
 
-		return prontuarioRepository.save(prontuario).getId();
+		prontuarioRepository.save(prontuario);
+
+		return prontuario.getId();
 	}
 
 	@Override
