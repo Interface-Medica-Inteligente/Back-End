@@ -3,8 +3,6 @@ package br.ufs.dcomp.interfacemedicainteligente.rest.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,11 +60,5 @@ public class RegistroAtendimentoController {
 	@ResponseStatus(CREATED)
 	public Long cadastrarRegistroCid(@RequestBody RegistroCID10DTO registroCID10Dto) {
 		return registroAtendimentoService.cadastrarRegistroCid(registroCID10Dto);
-	}
-
-	@GetMapping("/consultar-registro-cid10")
-	@ResponseStatus(OK)
-	public List<RegistroCID10DTO> consultarRegistroCid() {
-		return registroAtendimentoService.consultarRegistroCid();
 	}
 }

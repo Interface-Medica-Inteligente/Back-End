@@ -16,7 +16,5 @@ public interface MedicoService {
 	
     Long cadastrar(MedicoDTO medicoDto);
 
-	Long editar(long id, MedicoDTO medicoDto);
-
 	MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto);
 }
