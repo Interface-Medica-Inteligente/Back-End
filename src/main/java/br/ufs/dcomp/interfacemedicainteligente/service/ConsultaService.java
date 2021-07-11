@@ -11,7 +11,7 @@ public interface ConsultaService {
 
 	public Long cadastrarPaciente(PacienteDTO pacienteDto);
 
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO pessoaDocumentoDto);
+	public PacienteDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto);
 
 	public Long editarPaciente(PacienteDTO pacienteDto);
 

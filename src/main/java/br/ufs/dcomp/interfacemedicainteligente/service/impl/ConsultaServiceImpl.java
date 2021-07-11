@@ -53,7 +53,7 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO pessoaDocumentoDto) {
+	public PacienteDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto) {
 
 		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(pessoaDocumentoDto.getCpf());
 		if (paciente.isPresent()) {

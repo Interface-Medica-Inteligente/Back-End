@@ -34,7 +34,7 @@ public class ConsultaController {
 	@PostMapping("/consultar-paciente")
 	@ResponseStatus(OK)
 	public PacienteDTO consultarPaciente(@RequestBody PessoaDocumentoDTO cpf) {
-		return consultaService.consultarPaciente(cpf);
+		return consultaService.consultarProntuario(cpf);
 	}
 
 	@PostMapping("/cadastrar-consulta")
