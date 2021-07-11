@@ -2,6 +2,7 @@ package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.GeradorRelatorioUseful;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
@@ -128,6 +130,19 @@ public class ConsultaServiceImpl implements ConsultaService {
 		GeradorRelatorioUseful gerador = new GeradorRelatorioUseful();
 		try {
 			return Base64.getEncoder().encode(gerador.gerarRelatorioLaudo(relatorioLaudoDto));
+		} catch (JRException | FileNotFoundException e) {
+			throw new RegraNegocioException("Não foi possivel gerar o pdf.");
+		}
+	}
+
+	@Override
+	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaDTO relatorioReceitaDto) {
+
+		GeradorRelatorioUseful gerador = new GeradorRelatorioUseful();
+		relatorioReceitaDto.setDataEmissao(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+		try {
+			return Base64.getEncoder().encode(gerador.gerarRelatorioReceita(relatorioReceitaDto));
 		} catch (JRException | FileNotFoundException e) {
 			throw new RegraNegocioException("Não foi possivel gerar o pdf.");
 		}

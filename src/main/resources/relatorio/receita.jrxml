@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receita" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="98b7e728-83e5-4323-a97a-fb5aab5e3633">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nomePaciente" class="java.lang.String"/>
+	<field name="medicamento" class="java.lang.String"/>
+	<field name="quantidade" class="java.lang.String"/>
+	<field name="uso" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="via" class="java.lang.String"/>
+	<field name="dataEmissao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="81" y="11" width="350" height="40" uuid="cfa9e805-8983-4575-83e5-d026a7e6e1db"/>
+				<textElement textAlignment="Center">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Receita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="19" width="79" height="14" uuid="dbdccca5-3b78-4f31-8bf8-2ae72064c70b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9921ee49-1d2f-47ee-9afa-d3245ae66160"/>
+				</reportElement>
+				<text><![CDATA[Data Emissão:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="33" width="78" height="30" uuid="043b5bbe-6680-45c6-935d-652a65d4d735">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9921ee49-1d2f-47ee-9afa-d3245ae66160"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{dataEmissao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="19" width="490" height="15" uuid="f5771900-ce45-4e48-82b1-3ebf3041e6c9"/>
+				<staticText>
+					<reportElement x="0" y="0" width="50" height="15" uuid="4349daa9-1680-4274-b68e-be2b9a4e957a">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c66be2ff-be48-4a2a-a251-b43c17226108"/>
+					</reportElement>
+					<text><![CDATA[Paciente: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="70" y="1" width="410" height="14" uuid="0ab13b65-3d2d-47d3-8987-fb5e64811d43">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c66be2ff-be48-4a2a-a251-b43c17226108"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{nomePaciente}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="244" splitType="Stretch">
+			<textField>
+				<reportElement x="81" y="90" width="79" height="18" uuid="565a18d6-d0b6-4f53-8ef2-5bc6f261981b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9315538-4005-491c-afb0-fb8b1d8e506d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="90" width="79" height="18" uuid="4bb959a9-0737-41d6-89d2-bdc88d270a69">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9315538-4005-491c-afb0-fb8b1d8e506d"/>
+				</reportElement>
+				<text><![CDATA[Quantidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="70" height="20" uuid="cbc0b124-8e47-4b80-911e-4741c295874e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4adb48fa-20dd-43ef-87a7-6388d7e38406"/>
+				</reportElement>
+				<text><![CDATA[Medicamento: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="30" width="410" height="18" uuid="e894b170-3c4e-416c-a496-3553bed960f3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4adb48fa-20dd-43ef-87a7-6388d7e38406"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{medicamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="60" width="322" height="19" uuid="209d471d-b2da-44c3-b62f-2ccbe08c919c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="571a6341-5efa-4766-bdb3-dafd0f882cb3"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{uso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="60" width="38" height="19" uuid="8b69943f-7697-45e8-bf48-ddc97da88949">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="571a6341-5efa-4766-bdb3-dafd0f882cb3"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Uso:]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="140" width="460" height="104" uuid="3a57614c-fc9b-4c24-92d7-7825ce1ea31f"/>
+				<rectangle>
+					<reportElement x="0" y="-12" width="460" height="120" uuid="0ecc68ea-a06d-4111-bbdd-8fec8fc1bcb3"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="-12" width="79" height="19" uuid="efc15ae2-e236-49fc-89a6-9d868bd12e2f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="968b9b31-889f-4da0-a142-836be69ecbb6"/>
+					</reportElement>
+					<text><![CDATA[Descrição:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="79" y="-10" width="371" height="114" uuid="7f4f8560-69ba-469b-815e-75943c85a39c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="968b9b31-889f-4da0-a142-836be69ecbb6"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="51" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="79" height="14" uuid="39770277-073c-4764-a65e-ea1ec3277248">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24bd4046-3665-41e3-8a11-eff2fc721e4b"/>
+				</reportElement>
+				<text><![CDATA[Via:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="0" width="139" height="14" uuid="47c311a6-af70-4276-979d-9d6649d5fa2d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24bd4046-3665-41e3-8a11-eff2fc721e4b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{via}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
