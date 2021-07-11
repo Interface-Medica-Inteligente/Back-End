@@ -1,8 +1,7 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,9 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PacienteReposit
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ProntuarioRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
@@ -40,42 +41,34 @@ public class ConsultaServiceImpl implements ConsultaService {
 	private ProntuarioRepository prontuarioRepository;
 
 	@Override
-	public Long cadastrarPaciente(PacienteDTO pacienteDto) {
-		if (!ValidatorDocumentUseful.validarCpf(pacienteDto.getCpf()))
-			throw new RegraNegocioException("CPF Inválido.");
+	public Long cadastrarProntuario(CadastroProntuarioDTO cadastroProntuarioDto) {
 
-		Paciente paciente = new Paciente();
+		Optional<Paciente> paciente = pacienteRepository.findByCpf(cadastroProntuarioDto.getPaciente().getCpf());
+
+		if (paciente.isEmpty()) {
+			paciente = Optional.of(cadastrarPaciente(cadastroProntuarioDto.getPaciente()));
+		}
+
+		Long idConsulta = cadastrarConsulta(new ConsultaDTO(cadastroProntuarioDto.getMedico(), paciente.get().getId()));
+
+		cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
+				cadastroProntuarioDto.getAltura(), idConsulta));
+
 		Prontuario prontuario = new Prontuario();
 
-		paciente.setNome(pacienteDto.getNome());
-		paciente.setEmail(pacienteDto.getEmail());
-		paciente.setCpf(pacienteDto.getCpf());
-		paciente.setSexo(pacienteDto.getSexo());
-		paciente.setDataNascimento(pacienteDto.getDataNascimento());
-		paciente.setNomeMae(pacienteDto.getNomeMae());
-		paciente.setNomePai(pacienteDto.getNomePai());
+		prontuario.setPaciente(paciente.get());
 
-		pacienteRepository.save(paciente);
-
-		prontuario.setPaciente(paciente);
-		prontuarioRepository.save(prontuario);
-		
-		return paciente.getId();
+		return prontuarioRepository.save(prontuario).getId();
 	}
 
 	@Override
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO pessoaDocumentoDto) {
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto) {
 
-		Optional<Paciente> paciente = pacienteRepository.findByCpf(pessoaDocumentoDto.getCpf());
-		if (paciente.isPresent()) {
-			return new PacienteDTO(paciente.get());
+		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoDto.getCpf());
+		if (atendimento.isPresent()) {
+			return new ConsultaProntuarioDTO(atendimento.get());
 		}
 		throw new RegraNegocioException("Não existe paciente cadastrado para este cpf");
-	}
-
-	@Override
-	public Long editarPaciente(PacienteDTO pacienteDto) {
-		return null;
 	}
 
 	@Override
@@ -123,15 +116,24 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public List<AtendimentoDTO> consultarAtendimento(PessoaDocumentoDTO documentoPaciente) {
-		List<Atendimento> listaAtendimento = atendimentoRepository.consultar(documentoPaciente.getCpf());
-		return listaAtendimento.stream().map(atendimento -> new AtendimentoDTO(atendimento))
-				.collect(Collectors.toList());
-	}
-
-	@Override
 	public void gerarDocumentoPDF() {
 
 	}
 
+	private Paciente cadastrarPaciente(PacienteDTO pacienteDto) {
+		if (!ValidatorDocumentUseful.validarCpf(pacienteDto.getCpf()))
+			throw new RegraNegocioException("CPF Inválido.");
+
+		Paciente paciente = new Paciente();
+
+		paciente.setNome(pacienteDto.getNome());
+		paciente.setEmail(pacienteDto.getEmail());
+		paciente.setCpf(pacienteDto.getCpf());
+		paciente.setSexo(pacienteDto.getSexo());
+		paciente.setDataNascimento(pacienteDto.getDataNascimento());
+		paciente.setNomeMae(pacienteDto.getNomeMae());
+		paciente.setNomePai(pacienteDto.getNomePai());
+
+		return pacienteRepository.save(paciente);
+	}
 }

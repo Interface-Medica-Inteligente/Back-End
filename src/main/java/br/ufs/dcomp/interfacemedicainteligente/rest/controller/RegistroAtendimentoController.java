@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CNESDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroAtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.RegistroAtendimentoService;
@@ -28,14 +30,14 @@ public class RegistroAtendimentoController {
 
 	@PostMapping("/cadastrar-cid")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCid(@RequestBody CID10DTO cid10Dto) {
-		return registroAtendimentoService.cadastrarCid(cid10Dto);
+	public Long cadastrarCID10(@RequestBody CID10DTO cid10Dto) {
+		return registroAtendimentoService.cadastrarCID10(cid10Dto);
 	}
 
 	@GetMapping("/consultar-cid")
 	@ResponseStatus(OK)
-	public List<CID10DTO> consultarCid() {
-		return registroAtendimentoService.consultarCid();
+	public CID10DTO consultarCID10(@RequestBody ConsultaCID10DTO codigoCid10) {
+		return registroAtendimentoService.consultarCID10(codigoCid10);
 	}
 
 	@PostMapping("/cadastrar-cnes")
@@ -44,10 +46,10 @@ public class RegistroAtendimentoController {
 		return registroAtendimentoService.cadastrarCnes(cnesDto);
 	}
 
-	@GetMapping("/consultar-cnes")
+	@GetMapping("/consultar-cnes/{codigoCnes}")
 	@ResponseStatus(OK)
-	public List<CNESDTO> consultarCnes() {
-		return registroAtendimentoService.consultarCnes();
+	public CNESDTO consultarCnes(@PathVariable Integer codigoCnes) {
+		return registroAtendimentoService.consultarCnes(codigoCnes);
 	}
 
 	@PostMapping("/cadastrar-registro-atendimento")

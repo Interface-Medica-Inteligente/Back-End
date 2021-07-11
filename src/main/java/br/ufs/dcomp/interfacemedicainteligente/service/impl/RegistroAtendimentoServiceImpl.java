@@ -1,6 +1,7 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.RegistroCID10Re
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CNESDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroAtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.RegistroAtendimentoService;
@@ -38,7 +40,7 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	private RegistroCID10Repository registroCID10Repositorio;
 
 	@Override
-	public Long cadastrarCid(CID10DTO cid10dto) {
+	public Long cadastrarCID10(CID10DTO cid10dto) {
 		CID10 cid10 = new CID10();
 
 		cid10.setCodigo(cid10dto.getCodigo());
@@ -48,10 +50,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<CID10DTO> consultarCid() {
-		List<CID10> listaCID10 = cidRepositorio.findAll();
+	public CID10DTO consultarCID10(ConsultaCID10DTO codigoCid10) {
+		Optional<CID10> cid10 = cidRepositorio.findByCodigo(codigoCid10.getCodigoCid10());
 
-		return listaCID10.stream().map(cid10 -> new CID10DTO(cid10)).collect(Collectors.toList());
+		if (cid10.isPresent()) {
+			return new CID10DTO(cid10.get());
+		}
+
+		throw new RegraNegocioException("Não foi encontrado um cid10 para o código passado.");
 	}
 
 	@Override
@@ -65,10 +71,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public List<CNESDTO> consultarCnes() {
-		List<CNES> listaCnes = cnesRepositorio.findAll();
+	public CNESDTO consultarCnes(Integer codigoCnes) {
+		Optional<CNES> cnes = cnesRepositorio.findByCodigo(codigoCnes);
 
-		return listaCnes.stream().map(cnes -> new CNESDTO(cnes)).collect(Collectors.toList());
+		if (cnes.isPresent()) {
+			return new CNESDTO(cnes.get());
+		}
+
+		throw new RegraNegocioException("CNES não encontrado para o codigo passado.");
 	}
 
 	@Override

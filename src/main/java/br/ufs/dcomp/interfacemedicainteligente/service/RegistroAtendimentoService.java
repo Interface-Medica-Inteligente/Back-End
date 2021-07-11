@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CNESDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroAtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroCID10DTO;
 
@@ -17,11 +18,11 @@ public interface RegistroAtendimentoService {
 
 	public List<RegistroAtendimentoDTO> consultarRegistroAtendimento();
 
-	public Long cadastrarCid(CID10DTO cid10Dto);
+	public Long cadastrarCID10(CID10DTO cid10Dto);
 
-	public List<CID10DTO> consultarCid();
+	public CID10DTO consultarCID10(ConsultaCID10DTO codigoCid10);
 
 	public Long cadastrarCnes(CNESDTO cnesDto);
 
-	public List<CNESDTO> consultarCnes();
+	public CNESDTO consultarCnes(Integer codigoCnes);
 }
