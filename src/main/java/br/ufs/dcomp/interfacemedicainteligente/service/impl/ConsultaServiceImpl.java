@@ -54,11 +54,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 		cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
 				cadastroProntuarioDto.getAltura(), idConsulta));
 
-		Prontuario prontuario = new Prontuario();
+		Optional<Prontuario> prontuario = prontuarioRepository.findByPaciente(paciente.get());
 
-		prontuario.setPaciente(paciente.get());
+		if (prontuario.isEmpty()) {
+			prontuario.get().setPaciente(paciente.get());
+			return prontuarioRepository.save(prontuario.get()).getId();
+		}
 
-		return prontuarioRepository.save(prontuario).getId();
+		return prontuario.get().getId();
 	}
 
 	@Override
