@@ -16,6 +16,7 @@ import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 
 @RestController
@@ -41,5 +42,11 @@ public class ConsultaController {
 	@ResponseBody
 	public ResponseEntity<byte[]> gerarDocumentoLaudoPDF(@RequestBody RelatorioLaudoDTO relatorioLaudoDto) {
 		return ResponseEntity.ok().body(consultaService.gerarDocumentoLaudoPDF(relatorioLaudoDto));
+	}
+
+	@PostMapping("/gerar-documento-receita")
+	@ResponseBody
+	public ResponseEntity<byte[]> gerarDocumentoReceitaPDF(@RequestBody RelatorioReceitaDTO relatorioReceitaDto) {
+		return ResponseEntity.ok().body(consultaService.gerarDocumentoReceitaPDF(relatorioReceitaDto));
 	}
 }
