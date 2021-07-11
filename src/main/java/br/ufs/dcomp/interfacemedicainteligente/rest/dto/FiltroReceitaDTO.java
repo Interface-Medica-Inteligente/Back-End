@@ -6,13 +6,9 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-public class PrescricaoDTO {
-
-    private String quantidadeUso;
-
-    private Integer quantidadeDiaria;
+public class FiltroReceitaDTO {
     
-    private MedicamentoDTO medicamento;
+    private Long atendimento;
 
-    private ReceitaDTO receita;
+    private String medicamento;
 }
