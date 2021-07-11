@@ -49,7 +49,7 @@ public class ConsultaController {
 		return consultaService.cadastrarAtendimento(atendimentoDto);
 	}
 
-	@PostMapping("/consultar")
+	@PostMapping("/consultar-atendimento")
 	@ResponseStatus(OK)
 	public List<AtendimentoDTO> consultarAtendimento(@RequestBody PessoaDocumentoDTO pessoaDocumentoDto) {
 		return consultaService.consultarAtendimento(pessoaDocumentoDto);
