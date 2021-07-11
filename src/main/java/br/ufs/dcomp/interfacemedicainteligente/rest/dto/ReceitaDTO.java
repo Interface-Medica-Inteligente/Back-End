@@ -13,6 +13,8 @@ public class ReceitaDTO {
 
     private Boolean segundaVia;
 
+    private Long atendimento;
+
     public ReceitaDTO(Receita receita) {
 
         descricao = receita.getDescricao();
