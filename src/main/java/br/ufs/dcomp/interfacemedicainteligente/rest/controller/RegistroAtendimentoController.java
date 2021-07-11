@@ -34,7 +34,7 @@ public class RegistroAtendimentoController {
 		return registroAtendimentoService.cadastrarCID10(cid10Dto);
 	}
 
-	@PostMapping("/consultar-cid/{codigoCid10}")
+	@GetMapping("/consultar-cid/{codigoCid10}")
 	@ResponseStatus(OK)
 	public CID10DTO consultarCID10(@PathVariable ConsultaCID10DTO codigoCid10) {
 		return registroAtendimentoService.consultarCID10(codigoCid10);
