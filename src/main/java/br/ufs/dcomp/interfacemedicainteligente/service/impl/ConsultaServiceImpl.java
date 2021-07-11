@@ -1,6 +1,8 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,11 @@ import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
+import br.ufs.dcomp.interfacemedicainteligente.useful.GeradorRelatorioUseful;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
+import net.sf.jasperreports.engine.JRException;
 
 @Service
 public class ConsultaServiceImpl implements ConsultaService {
@@ -54,11 +59,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 		Long idAtendimento = cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
 				cadastroProntuarioDto.getAltura(), idConsulta));
 
-		Optional<Prontuario> prontuario = prontuarioRepository.findByPaciente(paciente.get());
-
-		if (prontuario.isEmpty()) {
-			prontuario.get().setPaciente(paciente.get());
-			return prontuarioRepository.save(prontuario.get()).getId();
+		if (prontuarioRepository.findByPaciente(paciente.get()).isEmpty()) {
+			Prontuario prontuario = new Prontuario();
+			prontuario.setPaciente(paciente.get());
+			prontuarioRepository.save(prontuario);
 		}
 
 		return idAtendimento;
@@ -119,8 +123,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public void gerarDocumentoPDF() {
+	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoDTO relatorioLaudoDto) {
 
+		GeradorRelatorioUseful gerador = new GeradorRelatorioUseful();
+		try {
+			return Base64.getEncoder().encode(gerador.gerarRelatorioLaudo(relatorioLaudoDto));
+		} catch (JRException | FileNotFoundException e) {
+			throw new RegraNegocioException("Não foi possivel gerar o pdf.");
+		}
 	}
 
 	private Paciente cadastrarPaciente(PacienteDTO pacienteDto) {
@@ -139,5 +149,4 @@ public class ConsultaServiceImpl implements ConsultaService {
 
 		return pacienteRepository.save(paciente);
 	}
-
 }
