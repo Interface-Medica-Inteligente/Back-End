@@ -26,6 +26,8 @@ public class ConsultaProntuarioDTO {
 
 	private char sexo;
 
+	private Long idAtendimento;
+
 	public ConsultaProntuarioDTO(Atendimento atendimento) {
 		this.nomePaciente = atendimento.getConsulta().getPaciente().getNome();
 		this.nomeMae = atendimento.getConsulta().getPaciente().getNomeMae();
@@ -35,6 +37,7 @@ public class ConsultaProntuarioDTO {
 		this.peso = atendimento.getPeso();
 		this.cpf = atendimento.getConsulta().getPaciente().getCpf();
 		this.sexo = atendimento.getConsulta().getPaciente().getSexo();
+		this.idAtendimento = atendimento.getId();
 	}
 
 }
