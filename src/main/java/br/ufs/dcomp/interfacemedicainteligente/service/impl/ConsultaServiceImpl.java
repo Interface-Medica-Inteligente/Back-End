@@ -1,8 +1,7 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +10,16 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Atendimento;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Consulta;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Paciente;
-import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Receita;
+import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Prontuario;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.AtendimentoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ConsultaRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PacienteRepository;
+import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ProntuarioRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
@@ -27,62 +29,63 @@ import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 public class ConsultaServiceImpl implements ConsultaService {
 
 	@Autowired
-	private PacienteRepository pacienteRepositorio;
+	private PacienteRepository pacienteRepository;
 
 	@Autowired
-	private AtendimentoRepository atendimentoRepositorio;
+	private AtendimentoRepository atendimentoRepository;
 
 	@Autowired
-	private ConsultaRepository consultaRepositorio;
+	private ConsultaRepository consultaRepository;
+
+	@Autowired
+	private ProntuarioRepository prontuarioRepository;
 
 	@Override
-	public Long cadastrarPaciente(PacienteDTO pacienteDTO) {
-		if (!ValidatorDocumentUseful.validarCpf(pacienteDTO.getCpf()))
-			throw new RegraNegocioException("CPF Inválido.");
+	public Long cadastrarProntuario(CadastroProntuarioDTO cadastroProntuarioDto) {
 
-		Paciente paciente = new Paciente();
+		Optional<Paciente> paciente = pacienteRepository.findByCpf(cadastroProntuarioDto.getPaciente().getCpf());
 
-		paciente.setNome(pacienteDTO.getNome());
-		paciente.setEmail(pacienteDTO.getEmail());
-		paciente.setCpf(pacienteDTO.getCpf());
-		paciente.setSexo(pacienteDTO.getSexo());
-		paciente.setDataNascimento(pacienteDTO.getDataNascimento());
-		paciente.setNomeMae(pacienteDTO.getNomeMae());
-		paciente.setNomePai(pacienteDTO.getNomePai());
+		if (paciente.isEmpty()) {
+			paciente = Optional.of(cadastrarPaciente(cadastroProntuarioDto.getPaciente()));
+		}
 
-		return pacienteRepositorio.save(paciente).getId();
+		Long idConsulta = cadastrarConsulta(new ConsultaDTO(cadastroProntuarioDto.getMedico(), paciente.get().getId()));
+
+		cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
+				cadastroProntuarioDto.getAltura(), idConsulta));
+
+		Prontuario prontuario = new Prontuario();
+
+		prontuario.setPaciente(paciente.get());
+
+		return prontuarioRepository.save(prontuario).getId();
 	}
 
 	@Override
-	public PacienteDTO consultarPaciente(PessoaDocumentoDTO cpf) {
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto) {
 
-		Optional<Paciente> paciente = pacienteRepositorio.findByCpf(cpf.getDocumentoPessoa());
-		if (paciente.isPresent()) {
-			return new PacienteDTO(paciente.get());
+		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoDto.getCpf());
+		if (atendimento.isPresent()) {
+			return new ConsultaProntuarioDTO(atendimento.get());
 		}
 		throw new RegraNegocioException("Não existe paciente cadastrado para este cpf");
 	}
 
 	@Override
-	public Long editarPaciente(PacienteDTO paciente) {
-		return null;
-	}
+	public Long cadastrarConsulta(ConsultaDTO consultaDto) {
 
-	@Override
-	public Long cadastrarConsulta(ConsultaDTO consultaDTO) {
-
-		if (consultaDTO.getIdMedico() > 0L && consultaDTO.getIdPaciente() > 0L) {
+		if (consultaDto.getMedico() > 0L && consultaDto.getPaciente() > 0L) {
 			Medico medico = new Medico();
 			Paciente paciente = new Paciente();
 			Consulta consulta = new Consulta();
 
-			medico.setId(consultaDTO.getIdMedico());
-			paciente.setId(consultaDTO.getIdPaciente());
+			medico.setId(consultaDto.getMedico());
+			paciente.setId(consultaDto.getPaciente());
 
 			consulta.setMedico(medico);
 			consulta.setPaciente(paciente);
 
-			return consultaRepositorio.save(consulta).getId();
+			return consultaRepository.save(consulta).getId();
 		}
 
 		throw new RegraNegocioException("É necessário informar o médico e o paciente.");
@@ -90,24 +93,22 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDTO) {
+	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto) {
 
-		if (atendimentoDTO.getIdConsulta() > 0L && atendimentoDTO.getIdReceita() > 0L) {
+		if (atendimentoDto.getConsulta() > 0L) {
+
 			Consulta consulta = new Consulta();
-			Receita receita = new Receita();
 
-			consulta.setId(atendimentoDTO.getIdConsulta());
-			receita.setId(atendimentoDTO.getIdReceita());
+			consulta.setId(atendimentoDto.getConsulta());
 
 			Atendimento atendimento = new Atendimento();
 
-			atendimento.setAltura(atendimentoDTO.getAltura());
-			atendimento.setPeso(atendimentoDTO.getPeso());
-			atendimento.setDataAtendimento(atendimentoDTO.getDataAgendamento());
+			atendimento.setAltura(atendimentoDto.getAltura());
+			atendimento.setPeso(atendimentoDto.getPeso());
+			atendimento.setDataAtendimento(atendimentoDto.getDataAgendamento());
 			atendimento.setConsulta(consulta);
-			atendimento.setReceita(receita);
 
-			return atendimentoRepositorio.save(atendimento).getId();
+			return atendimentoRepository.save(atendimento).getId();
 		}
 
 		throw new RegraNegocioException("É necessário informar uma consulta válida.");
@@ -115,15 +116,24 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public List<AtendimentoDTO> consultar(PessoaDocumentoDTO documentoPaciente) {
-		List<Atendimento> listaAtendimento = atendimentoRepositorio.consultar(documentoPaciente.getDocumentoPessoa());
-		return listaAtendimento.stream().map(atendimento -> new AtendimentoDTO(atendimento))
-				.collect(Collectors.toList());
-	}
-
-	@Override
 	public void gerarDocumentoPDF() {
 
 	}
 
+	private Paciente cadastrarPaciente(PacienteDTO pacienteDto) {
+		if (!ValidatorDocumentUseful.validarCpf(pacienteDto.getCpf()))
+			throw new RegraNegocioException("CPF Inválido.");
+
+		Paciente paciente = new Paciente();
+
+		paciente.setNome(pacienteDto.getNome());
+		paciente.setEmail(pacienteDto.getEmail());
+		paciente.setCpf(pacienteDto.getCpf());
+		paciente.setSexo(pacienteDto.getSexo());
+		paciente.setDataNascimento(pacienteDto.getDataNascimento());
+		paciente.setNomeMae(pacienteDto.getNomeMae());
+		paciente.setNomePai(pacienteDto.getNomePai());
+
+		return pacienteRepository.save(paciente);
+	}
 }

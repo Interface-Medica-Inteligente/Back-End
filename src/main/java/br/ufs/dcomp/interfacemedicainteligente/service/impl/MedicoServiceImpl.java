@@ -1,6 +1,5 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,6 +14,7 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepositor
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 
@@ -65,7 +65,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long authenticate(MedicoAtenticarDTO medicoAutenticarDto) {
+	public Long autenticar(MedicoAtenticarDTO medicoAutenticarDto) {
 		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDto.getEmail());
 
 		if (!medico.isPresent()) {
@@ -84,19 +84,19 @@ public class MedicoServiceImpl implements MedicoService {
 
 		Medico medico = medicoRepository.findById(id).map(med -> {
 
-			if(StringUtils.hasLength(medicoDto.getCpf())) {
+			if (StringUtils.hasLength(medicoDto.getCpf())) {
 				med.setCpf(medicoDto.getCpf());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getCrm())) {
+			if (StringUtils.hasLength(medicoDto.getCrm())) {
 				med.setCrm(medicoDto.getCrm());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getEmail())) {
+			if (StringUtils.hasLength(medicoDto.getEmail())) {
 				med.setEmail(medicoDto.getEmail());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getNome())) {
+			if (StringUtils.hasLength(medicoDto.getNome())) {
 				med.setNome(medicoDto.getNome());
 			}
 
@@ -111,8 +111,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public MedicoDTO consultar(String cpf) {
-		Optional<Medico> medico = medicoRepository.findByCpf(cpf);
+	public MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto) {
+		Optional<Medico> medico = medicoRepository.findByCpf(pessoaDocumentoDto.getCpf());
 
 		if (medico.isPresent()) {
 			return new MedicoDTO(medico.get());

@@ -10,7 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -39,7 +41,10 @@ public class Receita implements Serializable {
     @Column(name="data_emissao")
     private LocalDate dataEmissao;
 
-    @OneToMany(mappedBy="receita", fetch=FetchType.LAZY)
-    private List<Prescricao> prescricoes;
+    @OneToMany(mappedBy="receita", fetch=FetchType.EAGER)
+	private List<Prescricao> prescricoes;
 
+	@OneToOne
+	@JoinColumn(name = "id_atendimento")
+	private Atendimento atendimento;
 }

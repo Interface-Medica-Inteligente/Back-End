@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
-public class PessoaDocumentoDTO {
+@Getter
+public class ConsultaCID10DTO {
 
-	private String cpf;
+	private String codigoCid10;
 
 	@JsonCreator
-	public PessoaDocumentoDTO(@JsonProperty("cpf") String cpf) {
-		this.cpf = cpf;
+	public ConsultaCID10DTO(@JsonProperty("codigoCid10") String codigoCid10) {
+		this.codigoCid10 = codigoCid10;
 	}
-
 }

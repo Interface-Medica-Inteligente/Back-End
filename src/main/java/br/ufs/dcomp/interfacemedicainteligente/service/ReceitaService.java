@@ -2,20 +2,18 @@ package br.ufs.dcomp.interfacemedicainteligente.service;
 
 import java.util.List;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicamentoDTO;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.FiltroReceitaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.InformacaoReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PrescricaoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ReceitaDTO;
 
 public interface ReceitaService {
-    Long cadastrarReceita(ReceitaDTO receitaDto);
 
-    List<ReceitaDTO> consultarReceita();
+    List<InformacaoReceitaDTO> consultarReceitas(@PathVariable Long idPacient);
 
-    Long cadastrarPrescricao(PrescricaoDTO prescricaoDTO);
+    Long cadastrarPrescricao(PrescricaoDTO prescricaoDto);
 
-    List<PrescricaoDTO> consultarPrescricao();
+    List<InformacaoReceitaDTO> consultarReceitaPorFiltro(FiltroReceitaDTO filtroReceitaDto);
 
-    Long cadastrarMedicamento(MedicamentoDTO medicamentoDto);
-
-    List<MedicamentoDTO> consultarMedicamento(MedicamentoDTO medicamentoDto);
 }
