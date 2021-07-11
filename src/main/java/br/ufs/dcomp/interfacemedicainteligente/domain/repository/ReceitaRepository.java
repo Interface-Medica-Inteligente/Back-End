@@ -25,20 +25,8 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long> {
     Optional<Receita> findByIdPaciente(@Param("idPaciente") Long idPaciente);
 
     @Query(" SELECT rec FROM Receita rec "
-            + " JOIN FETCH rec.prescricoes  pre "
-            + " JOIN FETCH pre.medicamento med " 
-            + " WHERE med.nome = :medicamento ")
-    Optional<Receita> findByMedicamento(@Param("medicamento") String medicamento);
-
-    @Query(" SELECT rec FROM Receita rec "
-            + " JOIN FETCH rec.prescricoes  pre "
-            + " JOIN FETCH pre.medicamento med " 
-            + " WHERE rec.dataEmissao = :dataEmissao ")
-    Optional<Receita> findByDataEmissao(@Param("dataEmissao") LocalDate dataEmissao);
-
-    @Query(" SELECT rec FROM Receita rec "
-            + " JOIN FETCH rec.prescricoes  pre "
-            + " JOIN FETCH pre.medicamento med " 
-            + " WHERE rec.id = :id ")
-    Optional<Receita> findByFiltroId(@Param("id") Long id);
+        + " JOIN FETCH rec.prescricoes  pre "
+        + " JOIN FETCH pre.medicamento med " 
+        + " WHERE rec.id = :id AND rec.dataEmissao = :dataEmissao AND med.nome = :medicamento ")
+    Optional<Receita> findByFiltro(Long id, LocalDate dataEmissao, String medicamento);
 }
