@@ -1,6 +1,5 @@
 package br.ufs.dcomp.interfacemedicainteligente.service.impl;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,19 +84,19 @@ public class MedicoServiceImpl implements MedicoService {
 
 		Medico medico = medicoRepository.findById(id).map(med -> {
 
-			if(StringUtils.hasLength(medicoDto.getCpf())) {
+			if (StringUtils.hasLength(medicoDto.getCpf())) {
 				med.setCpf(medicoDto.getCpf());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getCrm())) {
+			if (StringUtils.hasLength(medicoDto.getCrm())) {
 				med.setCrm(medicoDto.getCrm());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getEmail())) {
+			if (StringUtils.hasLength(medicoDto.getEmail())) {
 				med.setEmail(medicoDto.getEmail());
 			}
 
-			if(StringUtils.hasLength(medicoDto.getNome())) {
+			if (StringUtils.hasLength(medicoDto.getNome())) {
 				med.setNome(medicoDto.getNome());
 			}
 
