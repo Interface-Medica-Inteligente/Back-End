@@ -48,7 +48,7 @@ public class RegistroAtendimentoController {
 
 	@GetMapping("/consultar-cnes/{codigoCnes}")
 	@ResponseStatus(OK)
-	public CNESDTO consultarCnes(@PathVariable int codigoCnes) {
+	public CNESDTO consultarCnes(@PathVariable Integer codigoCnes) {
 		return registroAtendimentoService.consultarCnes(codigoCnes);
 	}
 

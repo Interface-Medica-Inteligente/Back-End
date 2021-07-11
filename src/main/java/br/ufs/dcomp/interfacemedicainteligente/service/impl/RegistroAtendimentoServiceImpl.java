@@ -71,7 +71,7 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public CNESDTO consultarCnes(int codigoCnes) {
+	public CNESDTO consultarCnes(Integer codigoCnes) {
 		Optional<CNES> cnes = cnesRepositorio.findByCodigo(codigoCnes);
 
 		if (cnes.isPresent()) {

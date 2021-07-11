@@ -24,5 +24,5 @@ public interface RegistroAtendimentoService {
 
 	public Long cadastrarCnes(CNESDTO cnesDto);
 
-	public CNESDTO consultarCnes(int codigoCnes);
+	public CNESDTO consultarCnes(Integer codigoCnes);
 }

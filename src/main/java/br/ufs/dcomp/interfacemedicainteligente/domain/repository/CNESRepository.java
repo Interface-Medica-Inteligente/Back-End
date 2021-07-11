@@ -8,5 +8,5 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.entity.CNES;
 
 public interface CNESRepository extends JpaRepository<CNES, Long> {
 
-	Optional<CNES> findByCodigo(int codigoCnes);
+	Optional<CNES> findByCodigo(Integer codigoCnes);
 }
