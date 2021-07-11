@@ -13,11 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class InformacaoReceitaDTO {
     
-    private Long id;
+    private Long receita;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dataEmissao;
+    private LocalDate dataAtendimento;
 
-    private List<MedicamentoDTO> prescricao;
+    private List<MedicamentoDTO> medicamentos;
     
 }
