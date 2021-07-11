@@ -16,8 +16,6 @@ public interface RegistroAtendimentoService {
 
 	public Long cadastrarRegistroAtendimento(RegistroAtendimentoDTO registroAtendimentoDto);
 
-	public List<RegistroAtendimentoDTO> consultarRegistroAtendimento();
-
 	public Long cadastrarCID10(CID10DTO cid10Dto);
 
 	public CID10DTO consultarCID10(ConsultaCID10DTO codigoCid10);

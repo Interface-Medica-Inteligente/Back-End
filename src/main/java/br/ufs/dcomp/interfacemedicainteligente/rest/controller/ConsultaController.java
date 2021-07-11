@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
@@ -37,18 +35,6 @@ public class ConsultaController {
 	@ResponseStatus(OK)
 	public ConsultaProntuarioDTO consultarProntuario(@RequestBody PessoaDocumentoDTO cpf) {
 		return consultaService.consultarProntuario(cpf);
-	}
-
-	@PostMapping("/cadastrar-consulta")
-	@ResponseStatus(CREATED)
-	public Long cadastrarConsulta(@RequestBody ConsultaDTO consultaDto) {
-		return consultaService.cadastrarConsulta(consultaDto);
-	}
-
-	@PostMapping("/cadastrar-atendimento")
-	@ResponseStatus(CREATED)
-	public Long cadastrarAtendimento(@RequestBody AtendimentoDTO atendimentoDto) {
-		return consultaService.cadastrarAtendimento(atendimentoDto);
 	}
 
 	@PostMapping("/gerar-documento-laudo")

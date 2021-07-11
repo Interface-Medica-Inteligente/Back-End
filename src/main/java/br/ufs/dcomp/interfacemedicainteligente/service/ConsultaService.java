@@ -13,9 +13,9 @@ public interface ConsultaService {
 
 	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto);
 
+	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoDTO relatorioProntuarioDto);
+	
 	public Long cadastrarConsulta(ConsultaDTO consultaDto);
 
 	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto);
-
-	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoDTO relatorioProntuarioDto);
 }
