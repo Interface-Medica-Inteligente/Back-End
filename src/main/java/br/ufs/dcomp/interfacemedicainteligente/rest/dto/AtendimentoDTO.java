@@ -24,13 +24,10 @@ public class AtendimentoDTO {
 
 	private Long consulta;
 
-	private Long receita;
-
 	public AtendimentoDTO(Atendimento atendimento) {
 		this.dataAgendamento = atendimento.getDataAtendimento();
 		this.peso = atendimento.getPeso();
 		this.altura = atendimento.getAltura();
 		this.consulta = atendimento.getConsulta().getId();
-		this.receita = atendimento.getReceita().getId();
 	}
 }

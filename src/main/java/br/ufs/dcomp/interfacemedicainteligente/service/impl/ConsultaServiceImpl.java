@@ -12,7 +12,6 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Consulta;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Paciente;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Prontuario;
-import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Receita;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.AtendimentoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ConsultaRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PacienteRepository;
@@ -103,12 +102,11 @@ public class ConsultaServiceImpl implements ConsultaService {
 	@Override
 	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto) {
 
-		if (atendimentoDto.getConsulta() > 0L && atendimentoDto.getReceita() > 0L) {
+		if (atendimentoDto.getConsulta() > 0L) {
+
 			Consulta consulta = new Consulta();
-			Receita receita = new Receita();
 
 			consulta.setId(atendimentoDto.getConsulta());
-			receita.setId(atendimentoDto.getReceita());
 
 			Atendimento atendimento = new Atendimento();
 
@@ -116,7 +114,6 @@ public class ConsultaServiceImpl implements ConsultaService {
 			atendimento.setPeso(atendimentoDto.getPeso());
 			atendimento.setDataAtendimento(atendimentoDto.getDataAgendamento());
 			atendimento.setConsulta(consulta);
-			atendimento.setReceita(receita);
 
 			return atendimentoRepository.save(atendimento).getId();
 		}
