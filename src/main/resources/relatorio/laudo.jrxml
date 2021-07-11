@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receita" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="98b7e728-83e5-4323-a97a-fb5aab5e3633">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoCnes" class="java.lang.String"/>
+	<field name="nomeEstabelecimento" class="java.lang.String"/>
+	<field name="nomePaciente" class="java.lang.String"/>
+	<field name="nomeMae" class="java.lang.String"/>
+	<field name="peso" class="java.lang.String"/>
+	<field name="altura" class="java.lang.String"/>
+	<field name="codigoCid10" class="java.lang.String"/>
+	<field name="diagnostico" class="java.lang.String"/>
+	<field name="anamnese" class="java.lang.String"/>
+	<field name="consultaPrevia" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="90" y="20" width="350" height="40" uuid="cfa9e805-8983-4575-83e5-d026a7e6e1db"/>
+				<textElement textAlignment="Center">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Laudo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="351">
+			<textField>
+				<reportElement x="80" y="0" width="80" height="18" uuid="d8208e40-9119-4c33-aa91-5b6d7c8e9d6b"/>
+				<textFieldExpression><![CDATA[$F{codigoCnes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="19" uuid="1e1a8361-09c0-4b05-91ea-16eecb0d40c2"/>
+				<text><![CDATA[Código do Cnes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="0" width="250" height="18" uuid="21343b3a-3041-441e-8a7f-a140266aa0d8"/>
+				<textFieldExpression><![CDATA[$F{nomeEstabelecimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="170" y="0" width="120" height="18" uuid="d820e3eb-3498-4ada-8f2f-9fd12c97839a"/>
+				<text><![CDATA[Nome estabelecimento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="134" y="40" width="350" height="20" uuid="35a9e6a1-42f3-4887-8e11-eb4c5d3df398"/>
+				<textFieldExpression><![CDATA[$F{nomePaciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="134" height="20" uuid="9df15cc5-013e-4028-8b30-b33667fdc564"/>
+				<text><![CDATA[Nome completo do paciente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="80" width="314" height="20" uuid="e84899f0-c8f9-4170-b2f7-9bcc15d79690"/>
+				<textFieldExpression><![CDATA[$F{nomeMae}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="80" width="170" height="20" uuid="18ce5325-091f-4570-ae9c-87ba6bfa7bd0"/>
+				<text><![CDATA[Nome completo da mãe do paciente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="120" width="100" height="20" uuid="b837b53e-732d-461d-a22e-771c622e8a19"/>
+				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="120" width="90" height="20" uuid="39419c55-a953-4dff-a7a4-4e8f2a863d44"/>
+				<text><![CDATA[Peso do Paciente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="120" width="100" height="20" uuid="0504027f-6b13-4032-8ed1-e10db34505b1"/>
+				<textFieldExpression><![CDATA[$F{altura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="120" width="100" height="20" uuid="6e70b36d-477a-40f6-8cfb-a2ccab1aff38"/>
+				<text><![CDATA[Altura do paciente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="160" width="100" height="20" uuid="c589df59-d59a-49a1-a9c2-e1d9deca62ee"/>
+				<textFieldExpression><![CDATA[$F{codigoCid10}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="160" width="80" height="20" uuid="c8cf7795-9c82-463f-81e5-07b75d922982"/>
+				<text><![CDATA[Codigo CID-10:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="160" width="230" height="20" uuid="4756fcda-1057-4e16-ad93-8035db05a3ed"/>
+				<textFieldExpression><![CDATA[$F{diagnostico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="160" width="60" height="20" uuid="357a6a9c-0118-4ea2-a4d4-e375639dc928"/>
+				<text><![CDATA[Diagnostico:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="189" width="460" height="110" uuid="7de74532-712c-4eda-b4b3-69862bb5a5a6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="105" y="190" width="354" height="100" uuid="497de53c-4585-4097-b97c-d1153ea1c9e3"/>
+				<textFieldExpression><![CDATA[$F{anamnese}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="189" width="100" height="30" uuid="9a688391-8b5a-4435-83db-86981f68a937"/>
+				<text><![CDATA[Anamnese:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="321" width="100" height="30" uuid="39bc3248-8be6-49d6-b3f8-818f2cc57053"/>
+				<textFieldExpression><![CDATA[$F{consultaPrevia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="321" width="100" height="30" uuid="1591c3d7-954d-4063-b57b-eb9fcfb0a5d5"/>
+				<text><![CDATA[Paciente já realizou tratamento prévio:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="93" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="33" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
