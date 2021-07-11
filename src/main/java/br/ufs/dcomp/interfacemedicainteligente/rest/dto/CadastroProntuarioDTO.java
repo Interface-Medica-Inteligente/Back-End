@@ -9,8 +9,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CadastroProntuarioDTO {
 
-	private AtendimentoDTO atendimento;
-	private ConsultaDTO consulta;
 	private PacienteDTO paciente;
 
+	private Long medico;
+
+	private double peso;
+
+	private double altura;
 }

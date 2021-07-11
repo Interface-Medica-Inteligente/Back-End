@@ -7,12 +7,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Atendimento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class AtendimentoDTO {
 
 	@JsonFormat(pattern = "yyyy-MM-dd")

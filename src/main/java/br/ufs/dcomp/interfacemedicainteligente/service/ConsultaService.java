@@ -1,25 +1,20 @@
 package br.ufs.dcomp.interfacemedicainteligente.service;
 
-import java.util.List;
-
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 
 public interface ConsultaService {
 
-	public Long cadastrarPaciente(PacienteDTO pacienteDto);
+	public Long cadastrarProntuario(CadastroProntuarioDTO cadastroProntuarioDTO);
 
-	public PacienteDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto);
-
-	public Long editarPaciente(PacienteDTO pacienteDto);
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto);
 
 	public Long cadastrarConsulta(ConsultaDTO consultaDto);
 
 	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto);
-
-	public List<AtendimentoDTO> consultarAtendimento(PessoaDocumentoDTO PessoaDocumentoDto);
 
 	public void gerarDocumentoPDF();
 }
