@@ -73,12 +73,14 @@ public class ReceitaServiceImpl implements ReceitaService {
             List<MedicamentoDTO> medicamentos = new ArrayList<>();
             MedicamentoDTO medicamento = null;
             
+            receita.getAtendimento().getDataAtendimento();
+            
             for(Prescricao prescricao : receita.getPrescricoes()) {
                 medicamento = new MedicamentoDTO(prescricao.getMedicamento().getNome());
                 medicamentos.add(medicamento);
             }
 
-            InformacaoReceitaDTO receitaDto = new InformacaoReceitaDTO(receita.getId(), receita.getDataEmissao(), medicamentos);
+            InformacaoReceitaDTO receitaDto = new InformacaoReceitaDTO(receita.getId(), receita.getAtendimento().getDataAtendimento(), medicamentos);
 
             return receitaDto;
         }).collect(Collectors.toList());
@@ -119,13 +121,11 @@ public class ReceitaServiceImpl implements ReceitaService {
     public List<InformacaoReceitaDTO> consultarReceitaPorFiltro(FiltroReceitaDTO filtroReceitaDto) {
         Optional<Receita> receitas = null;
 
-        if(!StringUtils.hasLength(filtroReceitaDto.getMedicamento())
-            ||  filtroReceitaDto.getDataEmissao() == null
-            || filtroReceitaDto.getDataEmissao() == null) {
-            throw new RegraNegocioException("Preencha todos os campos da consulta");
+        if(!StringUtils.hasLength(filtroReceitaDto.getMedicamento())) {
+            throw new RegraNegocioException("Preencha o campo da consulta");
         }
 
-        receitas = receitaRepository.findByFiltro(filtroReceitaDto.getReceita(), filtroReceitaDto.getDataEmissao(), filtroReceitaDto.getMedicamento());
+        receitas = receitaRepository.findByFiltro(filtroReceitaDto.getMedicamento(), filtroReceitaDto.getAtendimento());
 
         if(receitas.isPresent()) {
             return converterReceitas(receitas);

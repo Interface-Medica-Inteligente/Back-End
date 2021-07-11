@@ -1,6 +1,5 @@
 package br.ufs.dcomp.interfacemedicainteligente.domain.repository;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,9 +23,10 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long> {
                 + " WHERE pac.id_pessoa = :idPaciente ", nativeQuery=true)
     Optional<Receita> findByIdPaciente(@Param("idPaciente") Long idPaciente);
 
-    @Query(" SELECT rec FROM Receita rec "
-        + " JOIN FETCH rec.prescricoes  pre "
-        + " JOIN FETCH pre.medicamento med " 
-        + " WHERE rec.id = :id AND rec.dataEmissao = :dataEmissao AND med.nome = :medicamento ")
-    Optional<Receita> findByFiltro(Long id, LocalDate dataEmissao, String medicamento);
+    @Query(value=" SELECT * FROM receita rec "
+                + " JOIN atendimento atd ON (atd.id_atendimento = rec.id_atendimento) " 
+                + " JOIN prescricao pre ON (pre.id_receita = rec.id_receita) "
+                + " JOIN medicamento med ON (med.id_medicamento = pre.id_medicamento) "
+                + " WHERE med.nome = :medicamento AND atd.id_atendimento = :idAtendimento ", nativeQuery=true)
+    Optional<Receita> findByFiltro(String medicamento, Long idAtendimento);
 }
