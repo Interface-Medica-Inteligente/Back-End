@@ -38,35 +38,35 @@
 	<detail>
 		<band height="351">
 			<textField>
-				<reportElement x="80" y="0" width="80" height="18" uuid="d8208e40-9119-4c33-aa91-5b6d7c8e9d6b"/>
+				<reportElement x="90" y="0" width="80" height="19" uuid="d8208e40-9119-4c33-aa91-5b6d7c8e9d6b"/>
 				<textFieldExpression><![CDATA[$F{codigoCnes}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="19" uuid="1e1a8361-09c0-4b05-91ea-16eecb0d40c2"/>
+				<reportElement x="0" y="0" width="90" height="19" uuid="1e1a8361-09c0-4b05-91ea-16eecb0d40c2"/>
 				<text><![CDATA[Código do Cnes:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="290" y="0" width="250" height="18" uuid="21343b3a-3041-441e-8a7f-a140266aa0d8"/>
+				<reportElement x="310" y="0" width="250" height="18" uuid="21343b3a-3041-441e-8a7f-a140266aa0d8"/>
 				<textFieldExpression><![CDATA[$F{nomeEstabelecimento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="170" y="0" width="120" height="18" uuid="d820e3eb-3498-4ada-8f2f-9fd12c97839a"/>
-				<text><![CDATA[Nome estabelecimento:]]></text>
+				<reportElement x="180" y="0" width="130" height="18" uuid="d820e3eb-3498-4ada-8f2f-9fd12c97839a"/>
+				<text><![CDATA[Nome do estabelecimento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="134" y="40" width="350" height="20" uuid="35a9e6a1-42f3-4887-8e11-eb4c5d3df398"/>
+				<reportElement x="140" y="40" width="350" height="20" uuid="35a9e6a1-42f3-4887-8e11-eb4c5d3df398"/>
 				<textFieldExpression><![CDATA[$F{nomePaciente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="40" width="134" height="20" uuid="9df15cc5-013e-4028-8b30-b33667fdc564"/>
+				<reportElement x="0" y="40" width="140" height="20" uuid="9df15cc5-013e-4028-8b30-b33667fdc564"/>
 				<text><![CDATA[Nome completo do paciente:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="170" y="80" width="314" height="20" uuid="e84899f0-c8f9-4170-b2f7-9bcc15d79690"/>
+				<reportElement x="176" y="80" width="314" height="20" uuid="e84899f0-c8f9-4170-b2f7-9bcc15d79690"/>
 				<textFieldExpression><![CDATA[$F{nomeMae}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="80" width="170" height="20" uuid="18ce5325-091f-4570-ae9c-87ba6bfa7bd0"/>
+				<reportElement x="0" y="80" width="176" height="20" uuid="18ce5325-091f-4570-ae9c-87ba6bfa7bd0"/>
 				<text><![CDATA[Nome completo da mãe do paciente:]]></text>
 			</staticText>
 			<textField>
