@@ -84,6 +84,15 @@ public class ConsultaServiceImpl implements ConsultaService {
 		return idAtendimento;
 	}
 
+	/**
+	 * Metodo responsavel pela consulta do prontuario atraves do objeto
+	 * {@link PessoaDocumentoCmd} contendo o documento do paciente
+	 * 
+	 * @param pessoaDocumentoCmd
+	 * @return um {@link ConsultaProntuarioDTO} contendo os dados do prontuario.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou caso nao encontre um prontuario.
+	 */
 	@Override
 	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoCmd pessoaDocumentoCmd) {
 		ValidacaoUtil.validarCmd(pessoaDocumentoCmd, validator);
@@ -92,9 +101,18 @@ public class ConsultaServiceImpl implements ConsultaService {
 		if (atendimento.isPresent()) {
 			return new ConsultaProntuarioDTO(atendimento.get());
 		}
+
 		throw new RegraNegocioException("Não existe paciente cadastrado para este cpf");
 	}
 
+	/**
+	 * Metodo responsavel por gerar o documento do laudo do pdf.
+	 * 
+	 * @param relatorioLaudoCmd
+	 * @return o {@link byte[]} contendo um array de bytes na base64.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou caso nao tenha sido possivel gerar o documento.
+	 */
 	@Override
 	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoCmd relatorioLaudoCmd) {
 		ValidacaoUtil.validarCmd(relatorioLaudoCmd, validator);
@@ -107,6 +125,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 		}
 	}
 
+	/**
+	 * Metodo responsavel por gerar o documento da receita em pdf.
+	 * 
+	 * @param relatorioReceitaCmd
+	 * @return o {@link byte[]} contendo um array de bytes na base64.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou caso nao tenha sido possivel gerar o documento.
+	 */
 	@Override
 	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaCmd relatorioReceitaCmd) {
 		ValidacaoUtil.validarCmd(relatorioReceitaCmd, validator);
