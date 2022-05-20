@@ -54,6 +54,12 @@ public class MedicoServiceImpl implements MedicoService {
 		throw new RegraNegocioException("Não existe medico cadastrado para este identificador");
 	}
 
+	/**
+	 * Metodo responsavel pelo cadastro do medico
+	 * 
+	 * @param medicoCmd
+	 * @return um {@link Long} contendo o id do medico cadastrado.
+	 */
 	@Override
 	@Transactional
 	public Long cadastrar(MedicoCmd medicoCmd) {
