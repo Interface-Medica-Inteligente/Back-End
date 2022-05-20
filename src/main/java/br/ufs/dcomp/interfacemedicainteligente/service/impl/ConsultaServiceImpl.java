@@ -53,6 +53,14 @@ public class ConsultaServiceImpl implements ConsultaService {
 	@Autowired
 	private ProntuarioRepository prontuarioRepository;
 
+	/**
+	 * Metodo responsavel pelo cadastro do prontuario
+	 * 
+	 * @param cadastroProntuarioCmd
+	 * @return um {@link Long} contendo o id do prontuario cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	public Long cadastrarProntuario(CadastroProntuarioCmd cadastroProntuarioCmd) {
 		ValidacaoUtil.validarCmd(cadastroProntuarioCmd, validator);
