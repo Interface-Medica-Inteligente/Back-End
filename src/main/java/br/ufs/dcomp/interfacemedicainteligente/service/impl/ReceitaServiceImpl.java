@@ -44,6 +44,14 @@ public class ReceitaServiceImpl implements ReceitaService {
 	@Autowired
 	private MedicamentoRepository medicamentoRepository;
 
+	/**
+	 * Metodo responsavel por consultar as receitas atraves do id do paciente
+	 * 
+	 * @param idPaciente
+	 * @return um {@link List<InformacaoReceitaDTO>} contendo a lista de receitas.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	public List<InformacaoReceitaDTO> consultarReceitas(Long idPaciente) {
 		if (idPaciente < 1) {
@@ -59,6 +67,14 @@ public class ReceitaServiceImpl implements ReceitaService {
 		}
 	}
 
+	/**
+	 * Metodo responsavel por cadastrar a prescricao
+	 * 
+	 * @param prescricaoCmd
+	 * @return um {@link Long} contendo o id da prescricao cadastrada.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	public Long cadastrarPrescricao(PrescricaoCmd prescricaoCmd) {
 		ValidacaoUtil.validarCmd(prescricaoCmd, validator);
@@ -73,6 +89,15 @@ public class ReceitaServiceImpl implements ReceitaService {
 		return prescricaoRepository.save(prescricao).getId();
 	}
 
+	/**
+	 * Metodo responsavel por consultar as receitas por filtro
+	 * 
+	 * @param filtroReceitaDto
+	 * @return um {@link List<InformacaoReceitaDTO>} contendo a lista de receita
+	 *         para o filtro passado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou caso nao tenha encontrado nenhuma.
+	 */
 	@Override
 	public List<InformacaoReceitaDTO> consultarReceitaPorFiltro(FiltroReceitaDTO filtroReceitaDto) {
 		Optional<Receita> receitas = null;
@@ -88,10 +113,6 @@ public class ReceitaServiceImpl implements ReceitaService {
 		}
 
 		throw new RegraNegocioException("Receita não encontrada");
-	}
-
-	public List<PrescricaoCmd> consultarPrescricao() {
-		return null;
 	}
 
 	private List<InformacaoReceitaDTO> converterReceitas(Optional<Receita> receitas) {
