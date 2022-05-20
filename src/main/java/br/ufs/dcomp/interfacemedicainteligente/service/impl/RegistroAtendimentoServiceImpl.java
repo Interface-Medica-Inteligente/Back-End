@@ -48,6 +48,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	@Autowired
 	private RegistroCID10Repository registroCID10Repositorio;
 
+	/**
+	 * Metodo responsavel por cadastrar o cid10
+	 * 
+	 * @param cid10Cmd
+	 * @return um {@link Long} contendo o id do cid10 cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	public Long cadastrarCID10(CID10Cmd cid10Cmd) {
 		ValidacaoUtil.validarCmd(cid10Cmd, validator);
@@ -60,6 +68,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		return cidRepositorio.save(cid10).getId();
 	}
 
+	/**
+	 * Metodo responsavel por consultar os dados do cid10
+	 * 
+	 * @param codigoCid10
+	 * @return um {@link CID10DTO} contendo os dados do cid10.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou nao tenha encontrado .
+	 */
 	@Override
 	public CID10DTO consultarCID10(ConsultaCID10Cmd codigoCid10) {
 		ValidacaoUtil.validarCmd(codigoCid10, validator);
@@ -73,6 +89,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		throw new RegraNegocioException("Não foi encontrado um cid10 para o código passado.");
 	}
 
+	/**
+	 * Metodo responsavel por cadastrar o Cnes
+	 * 
+	 * @param cnesCmd
+	 * @return um {@link Long} contendo o id do Cnes cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	public Long cadastrarCnes(CNESCmd cnesCmd) {
 		ValidacaoUtil.validarCmd(cnesCmd, validator);
@@ -85,6 +109,14 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		return cnesRepositorio.save(cnes).getId();
 	}
 
+	/**
+	 * Metodo responsavel por consultar o Cnes
+	 * 
+	 * @param codigoCnes
+	 * @return um {@link CNESDTO} contendo os dados do CNES.
+	 * @throws um {@link RegraNegocioException} caso o objeto nao tenha sido
+	 *            encontrado.
+	 */
 	@Override
 	public CNESDTO consultarCnes(Integer codigoCnes) {
 		Optional<CNES> cnes = cnesRepositorio.findByCodigo(codigoCnes);
@@ -96,6 +128,13 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		throw new RegraNegocioException("CNES não encontrado para o codigo passado.");
 	}
 
+	/**
+	 * Metodo responsavel por cadastrar o registro de atendimento
+	 * 
+	 * @param cadastroRegistroAtendimentoCmd
+	 * @return um {@link Long} contendo o id do registro do atendimento cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto esteja incorreto.
+	 */
 	@Override
 	public Long cadastrarRegistroAtendimento(CadastroRegistroAtendimentoCmd cadastroRegistroAtendimentoCmd) {
 		ValidacaoUtil.validarCmd(cadastroRegistroAtendimentoCmd, validator);
@@ -119,6 +158,13 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		return registroAtendimentoRepositorio.save(registroAtendimento).getId();
 	}
 
+	/**
+	 * Metodo responsavel por cadastrar o registro de CID
+	 * 
+	 * @param cadastroRegistroCid10Cmd
+	 * @return um {@link Long} contendo o id do registro do registro CID cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto esteja incorreto.
+	 */
 	@Override
 	public Long cadastrarRegistroCid(CadastroRegistroCid10Cmd cadastroRegistroCid10Cmd) {
 		ValidacaoUtil.validarCmd(cadastroRegistroCid10Cmd, validator);
@@ -139,6 +185,11 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 		return registroCID10Repositorio.save(registroCID10).getId();
 	}
 
+	/**
+	 * Metodo responsavel por consultar a lista de registro de cid
+	 * 
+	 * @return um {@link List<RegistroCID10DTO>} a lista de registro de Cid.
+	 */
 	@Override
 	public List<RegistroCID10DTO> consultarRegistroCid() {
 		List<RegistroCID10> listaRegistroCID10 = registroCID10Repositorio.findAll();
