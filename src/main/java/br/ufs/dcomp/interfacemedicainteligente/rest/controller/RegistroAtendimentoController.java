@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CID10Cmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CNESCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroRegistroAtendimentoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroRegistroCid10Cmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.ConsultaCID10Cmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CNESDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaCID10DTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroAtendimentoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.RegistroAtendimentoService;
 
 @RestController
@@ -28,20 +30,20 @@ public class RegistroAtendimentoController {
 
 	@PostMapping("/cadastrar-cid")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCID10(@RequestBody CID10DTO cid10Dto) {
-		return registroAtendimentoService.cadastrarCID10(cid10Dto);
+	public Long cadastrarCID10(@RequestBody CID10Cmd cid10Cmd) {
+		return registroAtendimentoService.cadastrarCID10(cid10Cmd);
 	}
 
 	@GetMapping("/consultar-cid/{codigoCid10}")
 	@ResponseStatus(OK)
-	public CID10DTO consultarCID10(@PathVariable ConsultaCID10DTO codigoCid10) {
+	public CID10DTO consultarCID10(@PathVariable ConsultaCID10Cmd codigoCid10) {
 		return registroAtendimentoService.consultarCID10(codigoCid10);
 	}
 
 	@PostMapping("/cadastrar-cnes")
 	@ResponseStatus(CREATED)
-	public Long cadastrarCnes(@RequestBody CNESDTO cnesDto) {
-		return registroAtendimentoService.cadastrarCnes(cnesDto);
+	public Long cadastrarCnes(@RequestBody CNESCmd cnesCmd) {
+		return registroAtendimentoService.cadastrarCnes(cnesCmd);
 	}
 
 	@GetMapping("/consultar-cnes/{codigoCnes}")
@@ -52,13 +54,14 @@ public class RegistroAtendimentoController {
 
 	@PostMapping("/cadastrar-registro-atendimento")
 	@ResponseStatus(CREATED)
-	public Long cadastrarRegistroAtendimento(@RequestBody RegistroAtendimentoDTO registroAtendimentoDto) {
-		return registroAtendimentoService.cadastrarRegistroAtendimento(registroAtendimentoDto);
+	public Long cadastrarRegistroAtendimento(
+			@RequestBody CadastroRegistroAtendimentoCmd cadastroRegistroAtendimentoCmd) {
+		return registroAtendimentoService.cadastrarRegistroAtendimento(cadastroRegistroAtendimentoCmd);
 	}
 
 	@PostMapping("/cadastrar-registro-cid10")
 	@ResponseStatus(CREATED)
-	public Long cadastrarRegistroCid(@RequestBody RegistroCID10DTO registroCID10Dto) {
-		return registroAtendimentoService.cadastrarRegistroCid(registroCID10Dto);
+	public Long cadastrarRegistroCid(@RequestBody CadastroRegistroCid10Cmd cadastroRegistroCid10Cmd) {
+		return registroAtendimentoService.cadastrarRegistroCid(cadastroRegistroCid10Cmd);
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,22 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.CNESRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.RegistroAtendimentoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.RegistroCID10Repository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CID10Cmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CNESCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroRegistroAtendimentoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroRegistroCid10Cmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.ConsultaCID10Cmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CNESDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaCID10DTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroAtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RegistroCID10DTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.RegistroAtendimentoService;
+import br.ufs.dcomp.interfacemedicainteligente.useful.ValidacaoUtil;
 
 @Service
 public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoService {
+
+	@Autowired
+	private Validator validator;
 
 	@Autowired
 	private CIDRepository cidRepositorio;
@@ -40,17 +49,21 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	private RegistroCID10Repository registroCID10Repositorio;
 
 	@Override
-	public Long cadastrarCID10(CID10DTO cid10dto) {
+	public Long cadastrarCID10(CID10Cmd cid10Cmd) {
+		ValidacaoUtil.validarCmd(cid10Cmd, validator);
+
 		CID10 cid10 = new CID10();
 
-		cid10.setCodigo(cid10dto.getCodigo());
-		cid10.setDescricao(cid10dto.getDescricao());
+		cid10.setCodigo(cid10Cmd.getCodigo());
+		cid10.setDescricao(cid10Cmd.getDescricao());
 
 		return cidRepositorio.save(cid10).getId();
 	}
 
 	@Override
-	public CID10DTO consultarCID10(ConsultaCID10DTO codigoCid10) {
+	public CID10DTO consultarCID10(ConsultaCID10Cmd codigoCid10) {
+		ValidacaoUtil.validarCmd(codigoCid10, validator);
+
 		Optional<CID10> cid10 = cidRepositorio.findByCodigo(codigoCid10.getCodigoCid10());
 
 		if (cid10.isPresent()) {
@@ -61,11 +74,13 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public Long cadastrarCnes(CNESDTO cnesDto) {
+	public Long cadastrarCnes(CNESCmd cnesCmd) {
+		ValidacaoUtil.validarCmd(cnesCmd, validator);
+
 		CNES cnes = new CNES();
 
-		cnes.setCodigo(cnesDto.getCodigo());
-		cnes.setNomeEstabelecimento(cnesDto.getNomeEstabelecimento());
+		cnes.setCodigo(cnesCmd.getCodigo());
+		cnes.setNomeEstabelecimento(cnesCmd.getNomeEstabelecimento());
 
 		return cnesRepositorio.save(cnes).getId();
 	}
@@ -82,51 +97,46 @@ public class RegistroAtendimentoServiceImpl implements RegistroAtendimentoServic
 	}
 
 	@Override
-	public Long cadastrarRegistroAtendimento(RegistroAtendimentoDTO registroAtendimentoDto) {
+	public Long cadastrarRegistroAtendimento(CadastroRegistroAtendimentoCmd cadastroRegistroAtendimentoCmd) {
+		ValidacaoUtil.validarCmd(cadastroRegistroAtendimentoCmd, validator);
 
-		if (registroAtendimentoDto.getAtendimento() > 0L && registroAtendimentoDto.getCnes() > 0L) {
-			Atendimento atendimento = new Atendimento();
+		Atendimento atendimento = new Atendimento();
 
-			atendimento.setId(registroAtendimentoDto.getAtendimento());
+		atendimento.setId(cadastroRegistroAtendimentoCmd.getAtendimento());
 
-			CNES cnes = new CNES();
+		CNES cnes = new CNES();
 
-			cnes.setId(registroAtendimentoDto.getCnes());
+		cnes.setId(cadastroRegistroAtendimentoCmd.getCnes());
 
-			RegistroAtendimento registroAtendimento = new RegistroAtendimento();
+		RegistroAtendimento registroAtendimento = new RegistroAtendimento();
 
-			registroAtendimento.setAnamnese(registroAtendimentoDto.isAnamnese());
-			registroAtendimento.setAnamneseProgressao(registroAtendimentoDto.getAnamneseProgessao());
-			registroAtendimento.setCnes(cnes);
-			registroAtendimento.setAtendimento(atendimento);
-			registroAtendimento.setEstadoTratamento(registroAtendimentoDto.getEstadoTratamento());
+		registroAtendimento.setAnamnese(cadastroRegistroAtendimentoCmd.isAnamnese());
+		registroAtendimento.setAnamneseProgressao(cadastroRegistroAtendimentoCmd.getAnamneseProgessao());
+		registroAtendimento.setCnes(cnes);
+		registroAtendimento.setAtendimento(atendimento);
+		registroAtendimento.setEstadoTratamento(cadastroRegistroAtendimentoCmd.getEstadoTratamento());
 
-			return registroAtendimentoRepositorio.save(registroAtendimento).getId();
-		}
-
-		throw new RegraNegocioException("É necessário informar um identificador para o atendimento.");
+		return registroAtendimentoRepositorio.save(registroAtendimento).getId();
 	}
 
 	@Override
-	public Long cadastrarRegistroCid(RegistroCID10DTO registroCid10Dto) {
-		if (registroCid10Dto.getRegistroAtendimento() > 0L && registroCid10Dto.getCid10() > 0L) {
-			RegistroAtendimento registroAtendimento = new RegistroAtendimento();
+	public Long cadastrarRegistroCid(CadastroRegistroCid10Cmd cadastroRegistroCid10Cmd) {
+		ValidacaoUtil.validarCmd(cadastroRegistroCid10Cmd, validator);
 
-			registroAtendimento.setId(registroCid10Dto.getRegistroAtendimento());
+		RegistroAtendimento registroAtendimento = new RegistroAtendimento();
 
-			CID10 cid10 = new CID10();
+		registroAtendimento.setId(cadastroRegistroCid10Cmd.getRegistroAtendimento());
 
-			cid10.setId(registroCid10Dto.getCid10());
+		CID10 cid10 = new CID10();
 
-			RegistroCID10 registroCID10 = new RegistroCID10();
+		cid10.setId(cadastroRegistroCid10Cmd.getCid10());
 
-			registroCID10.setRegistroAtendimento(registroAtendimento);
-			registroCID10.setCid10(cid10);
+		RegistroCID10 registroCID10 = new RegistroCID10();
 
-			return registroCID10Repositorio.save(registroCID10).getId();
-		}
-		throw new RegraNegocioException(
-				"É necessário informar o identificador do atendimento e idenditificador do CID10");
+		registroCID10.setRegistroAtendimento(registroAtendimento);
+		registroCID10.setCid10(cid10);
+
+		return registroCID10Repositorio.save(registroCID10).getId();
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Optional;
 
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +21,25 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ConsultaReposit
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PacienteRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ProntuarioRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.AtendimentoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroProntuarioCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.ConsultaCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PacienteCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioLaudoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioReceitaCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.GeradorRelatorioUseful;
+import br.ufs.dcomp.interfacemedicainteligente.useful.ValidacaoUtil;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 import net.sf.jasperreports.engine.JRException;
 
 @Service
 public class ConsultaServiceImpl implements ConsultaService {
+
+	@Autowired
+	private Validator validator;
 
 	@Autowired
 	private PacienteRepository pacienteRepository;
@@ -48,18 +54,18 @@ public class ConsultaServiceImpl implements ConsultaService {
 	private ProntuarioRepository prontuarioRepository;
 
 	@Override
-	public Long cadastrarProntuario(CadastroProntuarioDTO cadastroProntuarioDto) {
-
-		Optional<Paciente> paciente = pacienteRepository.findByCpf(cadastroProntuarioDto.getPaciente().getCpf());
+	public Long cadastrarProntuario(CadastroProntuarioCmd cadastroProntuarioCmd) {
+		ValidacaoUtil.validarCmd(cadastroProntuarioCmd, validator);
+		Optional<Paciente> paciente = pacienteRepository.findByCpf(cadastroProntuarioCmd.getPaciente().getCpf());
 
 		if (paciente.isEmpty()) {
-			paciente = Optional.of(cadastrarPaciente(cadastroProntuarioDto.getPaciente()));
+			paciente = Optional.of(cadastrarPaciente(cadastroProntuarioCmd.getPaciente()));
 		}
 
-		Long idConsulta = cadastrarConsulta(new ConsultaDTO(cadastroProntuarioDto.getMedico(), paciente.get().getId()));
+		Long idConsulta = cadastrarConsulta(new ConsultaCmd(cadastroProntuarioCmd.getMedico(), paciente.get().getId()));
 
-		Long idAtendimento = cadastrarAtendimento(new AtendimentoDTO(LocalDate.now(), cadastroProntuarioDto.getPeso(),
-				cadastroProntuarioDto.getAltura(), idConsulta));
+		Long idAtendimento = cadastrarAtendimento(new AtendimentoCmd(LocalDate.now(), cadastroProntuarioCmd.getPeso(),
+				cadastroProntuarioCmd.getAltura(), idConsulta));
 
 		if (prontuarioRepository.findByPaciente(paciente.get()).isEmpty()) {
 			Prontuario prontuario = new Prontuario();
@@ -71,9 +77,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto) {
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoCmd pessoaDocumentoCmd) {
+		ValidacaoUtil.validarCmd(pessoaDocumentoCmd, validator);
 
-		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoDto.getCpf());
+		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoCmd.getCpf());
 		if (atendimento.isPresent()) {
 			return new ConsultaProntuarioDTO(atendimento.get());
 		}
@@ -81,87 +88,78 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public Long cadastrarConsulta(ConsultaDTO consultaDto) {
-
-		if (consultaDto.getMedico() > 0L && consultaDto.getPaciente() > 0L) {
-			Medico medico = new Medico();
-			Paciente paciente = new Paciente();
-			Consulta consulta = new Consulta();
-
-			medico.setId(consultaDto.getMedico());
-			paciente.setId(consultaDto.getPaciente());
-
-			consulta.setMedico(medico);
-			consulta.setPaciente(paciente);
-
-			return consultaRepository.save(consulta).getId();
-		}
-
-		throw new RegraNegocioException("É necessário informar o médico e o paciente.");
-
-	}
-
-	@Override
-	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto) {
-
-		if (atendimentoDto.getConsulta() > 0L) {
-
-			Consulta consulta = new Consulta();
-
-			consulta.setId(atendimentoDto.getConsulta());
-
-			Atendimento atendimento = new Atendimento();
-
-			atendimento.setAltura(atendimentoDto.getAltura());
-			atendimento.setPeso(atendimentoDto.getPeso());
-			atendimento.setDataAtendimento(atendimentoDto.getDataAgendamento());
-			atendimento.setConsulta(consulta);
-
-			return atendimentoRepository.save(atendimento).getId();
-		}
-
-		throw new RegraNegocioException("É necessário informar uma consulta válida.");
-
-	}
-
-	@Override
-	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoDTO relatorioLaudoDto) {
+	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoCmd relatorioLaudoCmd) {
+		ValidacaoUtil.validarCmd(relatorioLaudoCmd, validator);
 
 		GeradorRelatorioUseful gerador = new GeradorRelatorioUseful();
 		try {
-			return Base64.getEncoder().encode(gerador.gerarRelatorioLaudo(relatorioLaudoDto));
+			return Base64.getEncoder().encode(gerador.gerarRelatorioLaudo(relatorioLaudoCmd));
 		} catch (JRException | FileNotFoundException e) {
 			throw new RegraNegocioException("Não foi possivel gerar o pdf.");
 		}
 	}
 
 	@Override
-	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaDTO relatorioReceitaDto) {
+	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaCmd relatorioReceitaCmd) {
+		ValidacaoUtil.validarCmd(relatorioReceitaCmd, validator);
 
 		GeradorRelatorioUseful gerador = new GeradorRelatorioUseful();
-		relatorioReceitaDto.setDataEmissao(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		relatorioReceitaCmd.setDataEmissao(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
 		try {
-			return Base64.getEncoder().encode(gerador.gerarRelatorioReceita(relatorioReceitaDto));
+			return Base64.getEncoder().encode(gerador.gerarRelatorioReceita(relatorioReceitaCmd));
 		} catch (JRException | FileNotFoundException e) {
 			throw new RegraNegocioException("Não foi possivel gerar o pdf.");
 		}
 	}
 
-	private Paciente cadastrarPaciente(PacienteDTO pacienteDto) {
-		if (!ValidatorDocumentUseful.validarCpf(pacienteDto.getCpf()))
+	private Paciente cadastrarPaciente(PacienteCmd pacienteCmd) {
+		if (!ValidatorDocumentUseful.validarCpf(pacienteCmd.getCpf()))
 			throw new RegraNegocioException("CPF Inválido.");
 
 		Paciente paciente = new Paciente();
 
-		paciente.setNome(pacienteDto.getNome());
-		paciente.setEmail(pacienteDto.getEmail());
-		paciente.setCpf(pacienteDto.getCpf());
-		paciente.setSexo(pacienteDto.getSexo());
-		paciente.setDataNascimento(pacienteDto.getDataNascimento());
-		paciente.setNomeMae(pacienteDto.getNomeMae());
-		paciente.setNomePai(pacienteDto.getNomePai());
+		paciente.setNome(pacienteCmd.getNome());
+		paciente.setEmail(pacienteCmd.getEmail());
+		paciente.setCpf(pacienteCmd.getCpf());
+		paciente.setSexo(pacienteCmd.getSexo());
+		paciente.setDataNascimento(pacienteCmd.getDataNascimento());
+		paciente.setNomeMae(pacienteCmd.getNomeMae());
+		paciente.setNomePai(pacienteCmd.getNomePai());
 
 		return pacienteRepository.save(paciente);
+	}
+
+	private Long cadastrarConsulta(ConsultaCmd consultaCmd) {
+		ValidacaoUtil.validarCmd(consultaCmd, validator);
+
+		Medico medico = new Medico();
+		Paciente paciente = new Paciente();
+		Consulta consulta = new Consulta();
+
+		medico.setId(consultaCmd.getMedico());
+		paciente.setId(consultaCmd.getPaciente());
+
+		consulta.setMedico(medico);
+		consulta.setPaciente(paciente);
+
+		return consultaRepository.save(consulta).getId();
+	}
+
+	private Long cadastrarAtendimento(AtendimentoCmd atendimentoCmd) {
+		ValidacaoUtil.validarCmd(atendimentoCmd, validator);
+
+		Consulta consulta = new Consulta();
+
+		consulta.setId(atendimentoCmd.getConsulta());
+
+		Atendimento atendimento = new Atendimento();
+
+		atendimento.setAltura(atendimentoCmd.getAltura());
+		atendimento.setPeso(atendimentoCmd.getPeso());
+		atendimento.setDataAtendimento(atendimentoCmd.getDataAgendamento());
+		atendimento.setConsulta(consulta);
+
+		return atendimentoRepository.save(atendimento).getId();
 	}
 }

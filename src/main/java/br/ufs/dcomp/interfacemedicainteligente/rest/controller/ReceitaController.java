@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.FiltroReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.InformacaoReceitaDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PrescricaoDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PrescricaoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.service.ReceitaService;
 
 @RestController
@@ -34,8 +34,8 @@ public class ReceitaController {
 
     @PostMapping("/cadastrar-prescricao")
     @ResponseStatus(CREATED)
-    public Long cadastrarPrescricao(@RequestBody PrescricaoDTO prescricaoDto) {
-        return receitaService.cadastrarPrescricao(prescricaoDto);
+    public Long cadastrarPrescricao(@RequestBody PrescricaoCmd prescricaoCmd) {
+        return receitaService.cadastrarPrescricao(prescricaoCmd);
     }
 
     @PostMapping("/consultar-receitas-filtro")
