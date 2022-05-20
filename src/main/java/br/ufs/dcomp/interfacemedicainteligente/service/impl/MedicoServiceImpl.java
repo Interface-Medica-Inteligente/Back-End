@@ -31,6 +31,11 @@ public class MedicoServiceImpl implements MedicoService {
 	@Autowired
 	private Validator validator;
 
+	/**
+	 * Metodo responsavel pela consulta de todos os medicos cadastrados
+	 * 
+	 * @return um {@link List<MedicoDTO>} contendo a lista dos metodos cadastrados.
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<MedicoDTO> findAll() {
@@ -38,6 +43,14 @@ public class MedicoServiceImpl implements MedicoService {
 		return list.stream().map(medico -> new MedicoDTO(medico)).collect(Collectors.toList());
 	}
 
+	/**
+	 * Metodo responsavel pela consulta dos dados do medico pelo id
+	 * 
+	 * @param medicoCmd
+	 * @return um {@link MedicoDTO} contendo o id do medico cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public MedicoDTO findById(long idMedico) {
@@ -59,6 +72,8 @@ public class MedicoServiceImpl implements MedicoService {
 	 * 
 	 * @param medicoCmd
 	 * @return um {@link Long} contendo o id do medico cadastrado.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto.
 	 */
 	@Override
 	@Transactional
@@ -85,6 +100,14 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
+	/**
+	 * Metodo responsavel pela autenticacao do medico
+	 * 
+	 * @param medicoAutenticarCmd
+	 * @return um {@link Long} contendo o id do medico caso esteja tudo ok.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou nao foi autenticado com sucesso.
+	 */
 	@Override
 	public Long autenticar(MedicoAutenticarCmd medicoAutenticarCmd) {
 		ValidacaoUtil.validarCmd(medicoAutenticarCmd, validator);
