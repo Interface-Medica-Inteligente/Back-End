@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import br.ufs.dcomp.interfacemedicainteligente.domain.entity.Medico;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.MedicoRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoAutenticarCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
+import br.ufs.dcomp.interfacemedicainteligente.useful.ValidacaoUtil;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 
 @Service
@@ -23,6 +27,9 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Autowired
 	private MedicoRepository medicoRepository;
+
+	@Autowired
+	private Validator validator;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -34,6 +41,10 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	@Transactional(readOnly = true)
 	public MedicoDTO findById(long idMedico) {
+		if (idMedico < 1L) {
+			throw new RegraNegocioException("Identificador inválido");
+		}
+
 		Optional<Medico> medico = medicoRepository.findById(idMedico);
 
 		if (medico.isPresent()) {
@@ -45,20 +56,20 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	@Transactional
-	public Long cadastrar(MedicoDTO medicoDto) {
-
-		if (!ValidatorDocumentUseful.validarCpf(medicoDto.getCpf()))
+	public Long cadastrar(MedicoCmd medicoCmd) {
+		ValidacaoUtil.validarCmd(medicoCmd, validator);
+		if (!ValidatorDocumentUseful.validarCpf(medicoCmd.getCpf()))
 			throw new RegraNegocioException("CPF Inválido.");
 
 		try {
 			Medico medico = new Medico();
 
-			medico.setNome(medicoDto.getNome());
-			medico.setCpf(medicoDto.getCpf());
-			medico.setEmail(medicoDto.getEmail());
-			medico.setSexo(medicoDto.getSexo());
-			medico.setCrm(medicoDto.getCrm());
-			medico.setSenha(medicoDto.getSenha());
+			medico.setNome(medicoCmd.getNome());
+			medico.setCpf(medicoCmd.getCpf());
+			medico.setEmail(medicoCmd.getEmail());
+			medico.setSexo(medicoCmd.getSexo());
+			medico.setCrm(medicoCmd.getCrm());
+			medico.setSenha(medicoCmd.getSenha());
 
 			medicoRepository.save(medico);
 
@@ -69,14 +80,16 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Long autenticar(MedicoAtenticarDTO medicoAutenticarDto) {
-		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarDto.getEmail());
+	public Long autenticar(MedicoAutenticarCmd medicoAutenticarCmd) {
+		ValidacaoUtil.validarCmd(medicoAutenticarCmd, validator);
+
+		Optional<Medico> medico = medicoRepository.findByEmail(medicoAutenticarCmd.getEmail());
 
 		if (!medico.isPresent()) {
 			throw new RegraNegocioException("Médico não encontrado para o email informado");
 		}
 
-		if (!medico.get().getSenha().equals(medicoAutenticarDto.getSenha())) {
+		if (!medico.get().getSenha().equals(medicoAutenticarCmd.getSenha())) {
 			throw new RegraNegocioException("Senha inválida");
 		}
 
@@ -84,8 +97,10 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto) {
-		Optional<Medico> medico = medicoRepository.findByCpf(pessoaDocumentoDto.getCpf());
+	public MedicoDTO consultar(PessoaDocumentoCmd pessoaDocumentoCmd) {
+		ValidacaoUtil.validarCmd(pessoaDocumentoCmd, validator);
+
+		Optional<Medico> medico = medicoRepository.findByCpf(pessoaDocumentoCmd.getCpf());
 
 		if (medico.isEmpty()) {
 			throw new RegraNegocioException("Não existe medico cadastrado para este cpf");

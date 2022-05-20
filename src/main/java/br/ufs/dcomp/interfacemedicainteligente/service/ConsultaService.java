@@ -1,24 +1,18 @@
 package br.ufs.dcomp.interfacemedicainteligente.service;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroProntuarioCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioLaudoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioReceitaCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 
 public interface ConsultaService {
 
-	public Long cadastrarProntuario(CadastroProntuarioDTO cadastroProntuarioDTO);
+	public Long cadastrarProntuario(CadastroProntuarioCmd cadastroProntuarioCmd);
 
-	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto);
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoCmd pessoaDocumentoCmd);
 
-	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoDTO relatorioLaudoDto);
+	public byte[] gerarDocumentoLaudoPDF(RelatorioLaudoCmd relatorioLaudoCmd);
 
-	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaDTO relatorioReceitaDto);
-
-	public Long cadastrarConsulta(ConsultaDTO consultaDto);
-
-	public Long cadastrarAtendimento(AtendimentoDTO atendimentoDto);
+	public byte[] gerarDocumentoReceitaPDF(RelatorioReceitaCmd relatorioReceitaCmd);
 }

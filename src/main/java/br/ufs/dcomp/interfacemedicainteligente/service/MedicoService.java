@@ -2,9 +2,10 @@ package br.ufs.dcomp.interfacemedicainteligente.service;
 
 import java.util.List;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoAutenticarCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 
 public interface MedicoService {
 
@@ -12,9 +13,9 @@ public interface MedicoService {
 
 	MedicoDTO findById(long idMedico);
 
-	Long autenticar(MedicoAtenticarDTO medicoAutenticarDto);
-	
-    Long cadastrar(MedicoDTO medicoDto);
+	Long autenticar(MedicoAutenticarCmd medicoAutenticarCmd);
 
-	MedicoDTO consultar(PessoaDocumentoDTO pessoaDocumentoDto);
+	Long cadastrar(MedicoCmd medicoDto);
+
+	MedicoDTO consultar(PessoaDocumentoCmd pessoaDocumentoCmd);
 }
