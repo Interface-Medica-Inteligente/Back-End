@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.CadastroProntuarioCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioLaudoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.RelatorioReceitaCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 
 @RestController
@@ -28,8 +28,8 @@ public class ConsultaController {
 
 	@PostMapping("/cadastrar-prontuario")
 	@ResponseStatus(CREATED)
-	public Long cadastrarProntuario(@RequestBody CadastroProntuarioDTO cadastroProntuarioDto) {
-		return consultaService.cadastrarProntuario(cadastroProntuarioDto);
+	public Long cadastrarProntuario(@RequestBody CadastroProntuarioCmd cadastroProntuarioCmd) {
+		return consultaService.cadastrarProntuario(cadastroProntuarioCmd);
 	}
 
 	@PostMapping("/consultar-prontuario")
@@ -40,13 +40,13 @@ public class ConsultaController {
 
 	@PostMapping("/gerar-documento-laudo")
 	@ResponseBody
-	public ResponseEntity<byte[]> gerarDocumentoLaudoPDF(@RequestBody RelatorioLaudoDTO relatorioLaudoDto) {
-		return ResponseEntity.ok().body(consultaService.gerarDocumentoLaudoPDF(relatorioLaudoDto));
+	public ResponseEntity<byte[]> gerarDocumentoLaudoPDF(@RequestBody RelatorioLaudoCmd relatorioLaudoCmd) {
+		return ResponseEntity.ok().body(consultaService.gerarDocumentoLaudoPDF(relatorioLaudoCmd));
 	}
 
 	@PostMapping("/gerar-documento-receita")
 	@ResponseBody
-	public ResponseEntity<byte[]> gerarDocumentoReceitaPDF(@RequestBody RelatorioReceitaDTO relatorioReceitaDto) {
-		return ResponseEntity.ok().body(consultaService.gerarDocumentoReceitaPDF(relatorioReceitaDto));
+	public ResponseEntity<byte[]> gerarDocumentoReceitaPDF(@RequestBody RelatorioReceitaCmd relatorioReceitaCmd) {
+		return ResponseEntity.ok().body(consultaService.gerarDocumentoReceitaPDF(relatorioReceitaCmd));
 	}
 }
