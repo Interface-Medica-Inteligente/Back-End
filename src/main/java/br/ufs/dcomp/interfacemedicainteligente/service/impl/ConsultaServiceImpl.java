@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Optional;
 
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +21,25 @@ import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ConsultaReposit
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.PacienteRepository;
 import br.ufs.dcomp.interfacemedicainteligente.domain.repository.ProntuarioRepository;
 import br.ufs.dcomp.interfacemedicainteligente.exception.RegraNegocioException;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.AtendimentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PacienteDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
 import br.ufs.dcomp.interfacemedicainteligente.useful.GeradorRelatorioUseful;
+import br.ufs.dcomp.interfacemedicainteligente.useful.ValidacaoUtil;
 import br.ufs.dcomp.interfacemedicainteligente.useful.ValidatorDocumentUseful;
 import net.sf.jasperreports.engine.JRException;
 
 @Service
 public class ConsultaServiceImpl implements ConsultaService {
+
+	@Autowired
+	private Validator validator;
 
 	@Autowired
 	private PacienteRepository pacienteRepository;
@@ -71,9 +77,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	@Override
-	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoDTO pessoaDocumentoDto) {
+	public ConsultaProntuarioDTO consultarProntuario(PessoaDocumentoCmd pessoaDocumentoCmd) {
+		ValidacaoUtil.validarCmd(pessoaDocumentoCmd, validator);
 
-		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoDto.getCpf());
+		Optional<Atendimento> atendimento = atendimentoRepository.consultar(pessoaDocumentoCmd.getCpf());
 		if (atendimento.isPresent()) {
 			return new ConsultaProntuarioDTO(atendimento.get());
 		}

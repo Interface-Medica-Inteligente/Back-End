@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoAtenticarDTO;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoAutenticarCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.MedicoCmd;
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.MedicoDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.MedicoService;
 
 @RestController
@@ -40,19 +41,19 @@ public class MedicoController {
 
 	@PostMapping("/autenticar")
 	@ResponseStatus(OK)
-	public Long autenticar(@RequestBody MedicoAtenticarDTO medicoAutenticarDto) {
-		return medicoService.autenticar(medicoAutenticarDto);
+	public Long autenticar(@RequestBody MedicoAutenticarCmd medicoAutenticarCmd) {
+		return medicoService.autenticar(medicoAutenticarCmd);
 	}
 
 	@PostMapping
 	@ResponseStatus(CREATED)
-	public Long cadastar(@RequestBody MedicoDTO medicoDto) {
+	public Long cadastar(@RequestBody MedicoCmd medicoDto) {
 		return medicoService.cadastrar(medicoDto);
 	}
 
 	@PostMapping("/consultar-medico")
 	@ResponseStatus(OK)
-	public MedicoDTO consultar(@RequestBody PessoaDocumentoDTO cpf) {
+	public MedicoDTO consultar(@RequestBody PessoaDocumentoCmd cpf) {
 		return medicoService.consultar(cpf);
 	}
 }

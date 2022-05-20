@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufs.dcomp.interfacemedicainteligente.rest.cmd.PessoaDocumentoCmd;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.CadastroProntuarioDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.ConsultaProntuarioDTO;
-import br.ufs.dcomp.interfacemedicainteligente.rest.dto.PessoaDocumentoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioLaudoDTO;
 import br.ufs.dcomp.interfacemedicainteligente.rest.dto.RelatorioReceitaDTO;
 import br.ufs.dcomp.interfacemedicainteligente.service.ConsultaService;
@@ -34,7 +34,7 @@ public class ConsultaController {
 
 	@PostMapping("/consultar-prontuario")
 	@ResponseStatus(OK)
-	public ConsultaProntuarioDTO consultarProntuario(@RequestBody PessoaDocumentoDTO cpf) {
+	public ConsultaProntuarioDTO consultarProntuario(@RequestBody PessoaDocumentoCmd cpf) {
 		return consultaService.consultarProntuario(cpf);
 	}
 
