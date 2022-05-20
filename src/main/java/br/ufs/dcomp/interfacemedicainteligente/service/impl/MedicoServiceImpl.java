@@ -125,6 +125,15 @@ public class MedicoServiceImpl implements MedicoService {
 		return medico.get().getId();
 	}
 
+	/**
+	 * Metodo responsavel pela consulta dos dados do medico atraves do objeto
+	 * contendo o documento
+	 * 
+	 * @param pessoaDocumentoCmd
+	 * @return um {@link MedicoDTO} contendo os dados do medico.
+	 * @throws um {@link RegraNegocioException} caso o objeto passado esteja
+	 *            incorreto ou nao foi existe para o documento passado.
+	 */
 	@Override
 	public MedicoDTO consultar(PessoaDocumentoCmd pessoaDocumentoCmd) {
 		ValidacaoUtil.validarCmd(pessoaDocumentoCmd, validator);
